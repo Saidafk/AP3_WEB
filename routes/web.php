@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiDocController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\HackathonController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ParticipantController;
 use App\Http\Middleware\IsEquipeConnected;
 use App\Models\Equipe;
 use App\Utils\SessionHelpers;
@@ -21,6 +22,8 @@ Route::post('/login', [EquipeController::class, 'connect'])->name('connect');
 Route::get('/join', [HackathonController::class, 'join'])->name('join');
 Route::any('/create-team', [EquipeController::class, 'create'])->name('create-team'); // Any pour gérer les GET et POST
 
+
+
 // Routes de l'API pour la documentation et les listes
 Route::get('/doc-api/', [ApiDocController::class, 'liste'])->name('doc-api');
 Route::get('/doc-api/hackathons', [ApiDocController::class, 'listeHackathons'])->name('doc-api-hackathons');
@@ -33,4 +36,6 @@ Route::middleware(isEquipeConnected::class)->group(function () {
     Route::get('/logout', [EquipeController::class, 'logout'])->name('logout');
     Route::get('/me', [EquipeController::class, 'me'])->name('me');
     Route::post('/membre/add', [EquipeController::class, 'addMembre'])->name('membre-add');
+
+Route::get('/participant', [ParticipantController::class, 'listeParticipant'])->name('listeParticipant');
 });
