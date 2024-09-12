@@ -38,4 +38,5 @@ Route::middleware(isEquipeConnected::class)->group(function () {
     Route::post('/membre/add', [EquipeController::class, 'addMembre'])->name('membre-add');
 
 Route::get('/participant', [ParticipantController::class, 'listeParticipant'])->name('listeParticipant');
+
 });

@@ -13,7 +13,7 @@ class ParticipantController extends Controller
     {
         $equipes = Equipe::with('membres')->get();
 
-        return view('equipe.listeParticipant', compact('equipes'));
+        return view('equipe.listeParticipant');
 
     }
 }
