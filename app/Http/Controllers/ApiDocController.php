@@ -79,4 +79,10 @@ class ApiDocController extends Controller
 
         return view('doc.membres', ['data' => $data, 'lequipe' => $lequipe]);
     }
+
+    
+   
+
+       
+    
 }

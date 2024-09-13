@@ -230,4 +230,13 @@ class EquipeController extends Controller
             return redirect("/me")->withErrors(['errors' => "Une erreur est survenue lors de l'ajout du membre à votre équipe."]);
         }
     }
+
+    function afficherMembres($id)
+    {
+        if (!SessionHelpers::isConnected()) {
+            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+        }
+        $equipes = Equipe::find($id)->membres;
+        return view("equipe.afficherMembres", ["equipes" => $equipes]);
+        }
 }

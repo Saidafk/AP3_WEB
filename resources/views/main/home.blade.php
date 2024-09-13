@@ -47,7 +47,12 @@
             <div v-else>
                 <a class="btn bg-green m-2 button-home" href="#" @click.prevent="participantsIsShown = false">←</a> Listes des participants
                 <ul class="pt-3">
-                    <li class="member" v-for="p in participants">🧑‍💻 @{{p['nomequipe']}}</li>
+                    <li class="member" v-for="p in participants">🧑‍💻 @{{p['nomequipe']}}
+
+                          
+                        <a class="btn btn-sm btn-primary" :href="`/afficherMembres/${p['idequipe']}`"> Membre </a>               
+                    
+                    </li>
                 </ul>
 
             </div>
@@ -78,7 +83,30 @@
                         .then(() => this.participantsIsShown = true) // Affiche la liste
                         .then(() => this.loading = false) // Arrêt de l'état chargement
                 }
-            }
+            },
+        
+
+            
+            membres : [],
+            membresIsShown: false,
+            loading: false,
+            getMembres() {
+                if (this.membres.length > 0) {
+                    // Si nous avons déjà chargé les participants, alors on utilise la liste déjà obtenue.
+                    this.membresIsShown = true
+                } else {
+                    this.loading = true;
+
+                    // Sinon on charge via l'API la liste des participants
+                    fetch("/api/membre/<?= $hackathon->idhackathon ?>")
+                        .then(result => result.json()) // Transforme le retour de l'API en tableau de participants
+                        .then(membres => this.membres = membres) // Sauvegarde la liste.
+                        .then(() => this.membresIsShown = true) // Affiche la liste
+                        .then(() => this.loading = false) // Arrêt de l'état chargement
+
+                }
+            } 
+        
         }).mount()
     </script>
 @endsection

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipe;
+use App\Models\Hackathon;
 use App\Models\Inscrire;
-use App\Utils\SessionHelpers;
 use Illuminate\Http\Request;
+use App\Utils\SessionHelpers;
 
 class HackathonController extends Controller
 {
@@ -22,6 +24,10 @@ class HackathonController extends Controller
 
         // Récupération de l'id du hackathon actif
         $idh = $request->get('idh');
+        if(Hackathon::find($idh) == null){
+            return redirect("/")->withErrors(['errors' => "Hackathon inexistant."]);
+
+        }
 
         try{
             // Inscription de l'équipe au hackathon
@@ -36,7 +42,12 @@ class HackathonController extends Controller
             return redirect("/me")->with('success', "Inscription réussie, vous faites maintenant partie du hackathon.");
         } catch (\Exception $e) {
             // Redirection vers la page d'accueil avec un message d'erreur
-            return redirect("/")->withErrors(['errors' => "Une erreur est survenue lors de l'inscription au hackathon."]);
+            
+            
+            
+                return redirect("/")->withErrors(['errors' => "Equipe déjà inscrite."]); 
+            
+            
         }
     }
 }
