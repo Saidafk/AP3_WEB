@@ -36,8 +36,10 @@
                 @endif
 
                 <div class="d-flex flex-wrap pt-3">
-                    <a class="btn bg-green m-2 button-home" href="/join?idh=<?= $hackathon->idhackathon ?>">Rejoindre</a>
-                    <a class="btn bg-green m-2 button-home" href="{{route("create-team")}}">Créer mon équipe</a>
+                @if ($rejoindre && $equipesmaxatteinte)
+                        <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
+                        <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
+                    @endif
                     <a class="btn bg-green m-2 button-home" href="#" @click.prevent="getParticipants">
                         <span v-if="!loading">Les participants</span>
                         <span v-else>Chargement en cours…</span>
@@ -105,7 +107,7 @@
                         .then(() => this.loading = false) // Arrêt de l'état chargement
 
                 }
-            } 
+            }
         
         }).mount()
     </script>

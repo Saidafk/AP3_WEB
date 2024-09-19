@@ -231,12 +231,21 @@ class EquipeController extends Controller
         }
     }
 
-    function afficherMembres($id)
+    public function afficherMembres($id)
     {
         if (!SessionHelpers::isConnected()) {
             return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
         }
-        $equipes = Equipe::find($id)->membres;
-        return view("equipe.afficherMembres", ["equipes" => $equipes]);
-        }
+    
+        $equipe = Equipe::find($id); // Récupère l'équipe pour les membres
+    
+        // Passer l'objet équipe à la vue
+
+        $membres = $equipe->membres;
+        $nomEquipe = $equipe -> nomequipe;
+
+        return view("equipe.afficherMembres", [
+            'equipes' => $membres, 'nomEquipe' => $nomEquipe
+        ]);
+    }
 }

@@ -39,3 +39,4 @@ Route::middleware(isEquipeConnected::class)->group(function () {
 
 Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres'])->name('afficherMembres');
 });
+

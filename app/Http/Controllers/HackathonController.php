@@ -19,14 +19,27 @@ class HackathonController extends Controller
         // Récupération de l'équipe connectée
         $equipe = SessionHelpers::getConnected();
 
+
+        // Vérifier si la date butoir est dépassée ou le nombre maximum d'équipes est atteint
+       
+
         // Le hackathon actif est en paramètre de la requête (idh en GET).
         // À prévoir : récupérer l'id du hackathon actif depuis la base de données pour éviter les erreurs.
 
         // Récupération de l'id du hackathon actif
         $idh = $request->get('idh');
         if(Hackathon::find($idh) == null){
+
             return redirect("/")->withErrors(['errors' => "Hackathon inexistant."]);
 
+            $dateact = new \DateTime();
+            $hackathonEndDateTime = new \DateTime($hackathon->dateheurefinh);
+            $nbequipes = $hackathon->equipes()->count();
+            $equipesmaxatteinte = $nbequipes >= $hackathon->equipesmax;
+    
+            if ($dateact > $hackathonEndDateTime || $equipesmaxatteinte) {
+                return redirect("/")->withErrors(['errors' => "Inscription impossible : la date butoir est dépassée ou le nombre maximum d'équipes est atteint."]);
+            }
         }
 
         try{
