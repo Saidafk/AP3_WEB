@@ -16,16 +16,22 @@ class MainController extends Controller
         // Récuération du hackathon actif (celui en cours)
         $hackathon = Hackathon::getActiveHackathon();
 
-        $finDuhackathon = $hackathon->dateheurefinh; // recupere dans la bdd la date et l'heure de fin du hackathon
+        $dateFin = $hackathon->dateButoir; // recupere dans la bdd la date et l'heure de fin du hackathon
         $nbEquipe = $hackathon->nbEquipe; // recupere dans la bsae de donnée le nombre d'équipe max
         $dateact = date('Y-m-d H:i:s'); // date actuellement 
 
         
-        $hackathonEndDateTime = new \DateTime($finDuhackathon); 
-        $dateact = new \DateTime($dateact);
+        $dateButoir = new DateTime($dateFin); 
+        $dateact = new DateTime($dateact);
 
         // Vérifier si la date actuelle est avant ou égale à la date butoir
-        $rejoindre = $dateact <= $hackathonEndDateTime;
+        $rejoindre = true;
+
+        //*if ($dateFin <= $dateact){
+            return $rejoindre = false;
+          }
+
+        //dd($dateact, $dateFin, $rejoindre);
 
         // Vérifier si le nombre maximum d'équipes est atteint
         $nbequipes = $hackathon->equipes()->count();
