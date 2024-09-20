@@ -31,7 +31,7 @@
     
     <h2>Contact</h2>
     <p>
-        Pour toute question concernant nos conditions générales ou notre politique de confidentialité, veuillez nous contacter à <a href="mailto:http://mail.dombtsig.local/">support@hackatinnov.com</a>.
+        Pour toute question concernant nos conditions générales ou notre politique de confidentialité, veuillez nous contacter : support@hackatinnov.com</a>.
     </p>
 </div>
 @endsection

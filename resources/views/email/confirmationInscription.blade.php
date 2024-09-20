@@ -1,20 +1,18 @@
+<h1>Confirmation d'inscription</h1>
 
+<p>Bonjour,</p>
 
-<!DOCTYPE html>
-<html>
+<p>Votre équipe {{ $equipe->nomequipe }} est maintenant inscrite au hackathon {{ $hackathon->thematique }}.</p>
 
-<head>
-    <title>Bienvenue sur Hackat'innov</title>
-</head>
+<h2>Détails de l'événement :</h2>
+<p>Date : {{ $hackathon->dateheuredebuth }} au {{ $hackathon->dateheurefinh }}</p>
+<p>Lieu : {{ $hackathon->ville }}</p>
 
-<body>
-    <h1>Bienvenue sur Hackat'innov !</h1>
-    <p>Cher {{ $equipe->nomequipe }},</p>
-    <p>Merci de rejoindre notre plateforme Hackat'innov. Nous sommes ravis de vous avoir parmi nous !</p>
-    <p>Nous organisons un Hackathon passionnant et nous vous invitons à y participer.</p>
-    <p>Si vous avez des questions ou besoin d'aide, n'hésitez pas à contacter notre équipe de support.</p>
-    <p>Cordialement,</p>
-    <p>Votre équipe de Hackat'innov</p>
-</body>
+<h2>Prochaines étapes :</h2>
+<p>Préparez-vous en conséquence et n'oubliez pas d'apporter le matériel nécessaire.</p>
 
-</html>
+<h2>Contact :</h2>
+<p>Pour toute question, contactez les organisateurs.</p>
+
+<p>Cordialement,</p>
+<p>L'équipe organisatrice</p>

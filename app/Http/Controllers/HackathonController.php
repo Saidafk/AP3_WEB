@@ -28,6 +28,7 @@ class HackathonController extends Controller
 
         // Récupération de l'id du hackathon actif
         $idh = $request->get('idh');
+        
         if(Hackathon::find($idh) == null){
 
             return redirect("/")->withErrors(['errors' => "Hackathon inexistant."]);

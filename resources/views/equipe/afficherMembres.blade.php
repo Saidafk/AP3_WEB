@@ -10,17 +10,15 @@
 <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg fullContainer">
 
 
-                        <table>
+<table>
+<h1>Voici les membre de l'équipe {{$nomEquipe}} </h1>
+    @foreach($equipes as $membre)
+        <tr>
+        <td>{{$membre->nom}} {{$membre->prenom}}</td>
+        </tr>
+    @endforeach
+</table>
                         
-                            <h1>Voici les membre de l'équipe {{$nomEquipe}} </h1>
-                            @foreach($equipes as $membre)
-                            <tr>
-                            <td>{{$membre->nom}} {{$membre->prenom}}</td>
-                            </tr>
-                            @endforeach
-                            
-                        </table>
-                        <a class="btn bg-green m-2 button-home" href="#"></a>
-                        @endsection
+@endsection
 
    

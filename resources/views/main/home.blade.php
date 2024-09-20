@@ -36,7 +36,7 @@
                 @endif
 
                 <div class="d-flex flex-wrap pt-3">
-                @if ($rejoindre && $equipesmaxatteinte)
+                @if ($rejoindre && !$equipesmaxatteinte)
                         <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
                         <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
                     @endif
