@@ -71,3 +71,16 @@
     font-weight: 200;
 }
 
+.button-container {
+    display: flex; /* Aligne les éléments horizontalement */
+    align-items: center; /* Centre verticalement */
+    margin-top: 20px; /* Espace entre le texte et le bouton */
+}
+
+.texte-special {
+    margin-right: 10px; /* Espace entre le texte et le bouton */
+    font-weight: bold; /* Gras si nécessaire */
+    --tw-text-opacity: 1;
+    color: rgba(70,255,189, 1);
+    background: transparent;
+}
