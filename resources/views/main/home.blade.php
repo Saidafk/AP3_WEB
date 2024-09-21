@@ -37,9 +37,16 @@
 
                 <div class="d-flex flex-wrap pt-3">
                 @if ($rejoindre && !$equipesmaxatteinte)
-                        <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
-                        <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
-                    @endif
+                    <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
+                    <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
+                    @elseif (!$rejoindre && $equipesmaxatteinte)
+                    <p>Date butoir et équipe max dépassé</p>
+                    @elseif (!$rejoindre)
+                    <p>Date butoir dépassé</p>
+                    @elseif ($equipesmaxatteinte)
+                    <p>Equipe max atteinte</p>
+                @endif
+            
                     <a class="btn bg-green m-2 button-home" href="#" @click.prevent="getParticipants">
                         <span v-if="!loading">Les participants</span>
                         <span v-else>Chargement en cours…</span>

@@ -18,28 +18,24 @@ class MainController extends Controller
 
         $dateFin = $hackathon->dateButoir; // recupere dans la bdd la date et l'heure de fin du hackathon
         $nbEquipe = $hackathon->nbEquipe; // recupere dans la bsae de donnée le nombre d'équipe max
-        $dateact = date('Y-m-d H:i:s'); // date actuellement 
+        $dateact = date('Y-m-d H:i:s'); // date actuellement
 
         
-        $dateButoir = new DateTime($dateFin); 
+        $dateFin= new DateTime($dateFin);
         $dateact = new DateTime($dateact);
 
         // Vérifier si la date actuelle est avant ou égale à la date butoir
         $rejoindre = true;
 
-        //*if ($dateFin <= $dateact){
-            return $rejoindre = false;
+        if ($dateact > $dateFin ){
+            $rejoindre = false;
           }
-
-        //dd($dateact, $dateFin, $rejoindre);
+      
 
         // Vérifier si le nombre maximum d'équipes est atteint
         $nbequipes = $hackathon->equipes()->count();
         $equipesmaxatteinte = $nbequipes >= $nbEquipe;
 
-        
-
-       
 
         
         // Affichage de la vue, avec les données récupérées
@@ -48,12 +44,6 @@ class MainController extends Controller
             'organisateur' => $hackathon->organisateur,
             'rejoindre' => $rejoindre,
             'equipesmaxatteinte' => $equipesmaxatteinte,
-
-        /**$laDate = now();
-        $rejoindre = $Datelimite -> $hackathon->registration_deadline;
-        $maxTeamsReached = $hackathon->equipes()->count() >= $hackathon->equipemax; */
-        
-
         
         ]);
     
