@@ -38,5 +38,6 @@ Route::middleware(isEquipeConnected::class)->group(function () {
     Route::post('/membre/add', [EquipeController::class, 'addMembre'])->name('membre-add');
 
 Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres'])->name('afficherMembres');
+Route::delete('/membre/delete/{id}', [EquipeController::class, 'supprimerMembre']);
 });
 

@@ -126,6 +126,7 @@ class EquipeController extends Controller
 
             // Envoi d'un email permettant de confirmer l'inscription
             EmailHelpers::sendEmail($equipe->login, "Inscription de votre équipe", "email.confirmationInscription", ['equipe' => $equipe, 'hackathon' => $hackathon]);
+            
 
             
 
@@ -231,6 +232,18 @@ class EquipeController extends Controller
             // Redirection vers la page de l'équipe avec un message d'erreur
             return redirect("/me")->withErrors(['errors' => "Une erreur est survenue lors de l'ajout du membre à votre équipe."]);
         }
+    }
+
+    public function supprimerMembre (Request $request, $id){
+
+        if (!SessionHelpers::isConnected()) {
+            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
+        }
+        $membre = Membre::find($id);
+
+        $membre->delete();
+
+        EmailHelpers::sendEmail($membre->email, "Suppression d'un membre de votre équipe.", "email.suppressionMembre", ['membre' => $membre]);
     }
 
     public function afficherMembres($id)
