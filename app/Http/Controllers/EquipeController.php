@@ -224,27 +224,50 @@ class EquipeController extends Controller
             $membre->idequipe = $equipe->idequipe;
             $membre->save();
 
+            
             // TODO : envoyer un email de confirmation au membre en s'inspirant de la méthode create de EquipeController (emailHelpers::sendEmail)
 
             // Redirection vers la page de l'équipe
             return redirect("/me")->with('success', "Le membre a bien été ajouté à votre équipe.");
+            
         } catch (\Exception $e) {
             // Redirection vers la page de l'équipe avec un message d'erreur
             return redirect("/me")->withErrors(['errors' => "Une erreur est survenue lors de l'ajout du membre à votre équipe."]);
         }
+        EmailHelpers::sendEmail($membre->idequipe, "Ajout d'un membre.", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $idequipe]);
+        
+        
+        
     }
 
-    public function supprimerMembre (Request $request, $id){
+    public function supprimerMembre (){
 
         if (!SessionHelpers::isConnected()) {
             return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
         }
-        $membre = Membre::find($id);
+        
+        return view('equipe.confirmationSupression');
+        
+        
+
+        
+       
+    }
+
+    public function confirmationSupression (Membre $membre){
+
+        if (!SessionHelpers::isConnected()) {
+            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
+        }
 
         $membre->delete();
 
-        EmailHelpers::sendEmail($membre->email, "Suppression d'un membre de votre équipe.", "email.suppressionMembre", ['membre' => $membre]);
+        return redirect()->back();
+
+
     }
+
+
 
     public function afficherMembres($id)
     {
@@ -262,5 +285,10 @@ class EquipeController extends Controller
         return view("equipe.afficherMembres", [
             'equipes' => $membres, 'nomEquipe' => $nomEquipe
         ]);
+    }
+
+    public function modifierProfile()
+    {
+        
     }
 }

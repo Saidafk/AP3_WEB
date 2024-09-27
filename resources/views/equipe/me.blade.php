@@ -30,6 +30,7 @@
 
                 @if ($hackathon != null)
                     <h5>Votre équipe est inscrite au Hackathon <br><br> « {{ $hackathon->thematique }} »</h5>
+                    
                     <br/>
                     <img src="{{ $hackathon->affiche }}" alt="Affiche de l'évènement." class="w-50"/>
                 @else
@@ -37,6 +38,9 @@
                         Vous ne participez à aucun évènement.
                     </p>
                 @endif
+                <a href="/modifierProfile" class="btn btn-danger btn-small">Modifier votre profile</a>
+                
+
 
             </div>
 
@@ -52,7 +56,15 @@
                 <ul class="p-0 m-0 mb-2">
                     @foreach ($membres as $m)
                         <li class="member">🧑‍💻 {{ "{$m->nom} {$m->prenom}" }}</li>
+                        <div class="card-actions">
+                        
+                        
+                        
+                                <a href="/confirmationSupression/{{$m->idmembre}}" class="btn btn-danger btn-small">supprimer le membre</a>           
+                            
+            </div>
                     @endforeach
+                    
                 </ul>
 
                 <form method="post" class="row g-1" action="{{ route("membre-add") }}">
@@ -66,6 +78,7 @@
                     <div class="col">
                         <input type="submit" value="Ajouter" class="btn btn-success d-block w-100"/>
                     </div>
+
                 </form>
             </div>
         </div>
