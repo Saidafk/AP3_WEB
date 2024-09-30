@@ -15,13 +15,11 @@
 }
 h1 {
     color: white;
-    font-size: 70px;
-
+    font-size: 40px;
 }
 
 td {
-    font-size: 50px; /* Change la taille de la police pour les cellules de la table */
-    padding: 10px; /* Ajoute du padding pour une meilleure lisibilité */
+    font-size: 30px; 
     color: white;
 }
 

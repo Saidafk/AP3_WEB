@@ -14,6 +14,8 @@ include('inc/api.php');
 
 // Routes de base
 Route::get('/', [MainController::class, 'home'])->name('home');
+
+
 Route::get('/about', [MainController::class, 'about'])->name('about');
 
 // Routes d'authentification et de gestion d'équipe
@@ -42,10 +44,12 @@ Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres']
 
 //Route::get('/', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
 
-//Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
-Route::get('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
+Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
+Route::delete('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
 
 Route::get('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
+
+Route::get('/me', [EquipeController::class, 'me'])->name('me');
 
 });
 

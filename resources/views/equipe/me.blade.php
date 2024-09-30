@@ -38,13 +38,14 @@
                         Vous ne participez à aucun évènement.
                     </p>
                 @endif
-                <a href="/modifierProfile" class="btn btn-danger btn-small">Modifier votre profile</a>
+                
                 
 
 
             </div>
 
             <div class="card-actions">
+                <a href="/modifierProfile" class="btn btn-success">Modifier votre profile</a>
                 <a href="/logout" class="btn btn-danger btn-small">Déconnexion</a>
             </div>
         </div>
@@ -60,7 +61,8 @@
                         
                         
                         
-                                <a href="/confirmationSupression/{{$m->idmembre}}" class="btn btn-danger btn-small">supprimer le membre</a>           
+                                <a href="{{ route('supprimerMembre', ['membre' => $m->idmembre]) }}" class="btn btn-danger btn-small">supprimer le membre</a>
+           
                             
             </div>
                     @endforeach

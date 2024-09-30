@@ -36,7 +36,7 @@
                 @endif
 
                 <div class="d-flex flex-wrap pt-3">
-                <div class="button-container">
+                
                 @if ($rejoindre && !$equipesmaxatteinte)
                     <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
                     <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
@@ -47,13 +47,19 @@
                     @elseif ($equipesmaxatteinte)
                     <p><b class="texte-special">Le nombre d'équipe max a été atteint.</b></p>
                 @endif
-                </div>
+                
+                
+                
                     <a class="btn bg-green m-2 button-home" href="#" @click.prevent="getParticipants">
                         <span v-if="!loading">Les participants</span>
                         <span v-else>Chargement en cours…</span>
                     </a>
                 
                 </div>
+                @if ($nbPlaceRestante > 0 && $rejoindre)
+                <p><b class="texte-special">Il reste {{$nbPlaceRestante}} places</b></p>
+                @endif
+
             </div>
             <div v-else>
                 <a class="btn bg-green m-2 button-home" href="#" @click.prevent="participantsIsShown = false">←</a> Listes des participants
@@ -61,7 +67,7 @@
                     <li class="member" v-for="p in participants">🧑‍💻 @{{p['nomequipe']}}
 
                           
-                        <a class="btn btn-sm btn-primary" :href="`/afficherMembres/${p['idequipe']}`"> Membres </a>               
+                        <a class="btn btn-sm btn-primary" :href="`/afficherMembres/${p['idequipe']}`"> Membres </a>
                     
                     </li>
                 </ul>

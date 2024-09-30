@@ -186,7 +186,7 @@ class EquipeController extends Controller
         // Voir la méthode membres() dans le modèle Equipe équivalente à la ligne précédente.
         $membres = $equipe->membres()->get();
 
-        return view('equipe.me', ['connected' => $equipe, 'membres' => $membres, 'hackathon' => $hackathon, 'membres' => $membres]);
+        return view('equipe.me', ['connected' => $equipe, 'membres' => $membres, 'hackathon' => $hackathon]);
     }
 
     /**
@@ -223,12 +223,12 @@ class EquipeController extends Controller
             $membre->prenom = $request->input('prenom');
             $membre->idequipe = $equipe->idequipe;
             $membre->save();
-
+            EmailHelpers::sendEmail($equipe->login, "Inscription de votre équipe", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $equipe]);
             
             // TODO : envoyer un email de confirmation au membre en s'inspirant de la méthode create de EquipeController (emailHelpers::sendEmail)
 
             // Redirection vers la page de l'équipe
-            return redirect("/me")->with('success', "Le membre a bien été ajouté à votre équipe.");
+            return redirect("/me")->with('success', "Le membre a bien été ajouté à votre équipe. Vérifiez votre boîte mail pour confirmer l'ajout de votre membre");
             
         } catch (\Exception $e) {
             // Redirection vers la page de l'équipe avec un message d'erreur
@@ -240,13 +240,16 @@ class EquipeController extends Controller
         
     }
 
-    public function supprimerMembre (){
+    public function supprimerMembre (Membre $membre){
 
         if (!SessionHelpers::isConnected()) {
             return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
         }
         
-        return view('equipe.confirmationSupression');
+        
+
+
+        return view('equipe.confirmationSupression', ['membre' => $membre]);
         
         
 
@@ -262,10 +265,11 @@ class EquipeController extends Controller
 
         $membre->delete();
 
-        return redirect()->back();
-
-
+        return redirect()->route('me')->with('success', 'Membre supprimé avec succès.');
     }
+
+
+    
 
 
 
@@ -282,13 +286,11 @@ class EquipeController extends Controller
         $membres = $equipe->membres;
         $nomEquipe = $equipe -> nomequipe;
 
-        return view("equipe.afficherMembres", [
-            'equipes' => $membres, 'nomEquipe' => $nomEquipe
-        ]);
+        return view("equipe.afficherMembres", ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
     }
 
     public function modifierProfile()
     {
-        
+        // à faire
     }
 }

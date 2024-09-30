@@ -13,6 +13,18 @@
     bottom: 0;
     overflow: auto;
 }
+h1 {
+    color: white;
+    font-size: 40px;
+
+}
+
+td {
+    font-size: 50px; /* Change la taille de la police pour les cellules de la table */
+    padding: 10px; /* Ajoute du padding pour une meilleure lisibilité */
+    color: white;
+}
+
 
 .card{
     padding: 10px 20px;
@@ -69,19 +81,4 @@
 .bannerHome > p {
     font-size: 17px;
     font-weight: 200;
-}
-
-
-.texte-special {
-    margin-right: 10px; 
-    font-weight: bold; 
-    --tw-text-opacity: 1;
-    color: rgba(70,255,189, 1);
-    background: transparent;
-    font-size: 30px;
-}
-
-p{
-    text-align: center;
-    font-size: 17px;
 }

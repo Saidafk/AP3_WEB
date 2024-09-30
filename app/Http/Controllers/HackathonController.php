@@ -41,6 +41,10 @@ class HackathonController extends Controller
             if ($dateact > $hackathonEndDateTime || $equipesmaxatteinte) {
                 return redirect("/")->withErrors(['errors' => "Inscription impossible : la date butoir est dépassée ou le nombre maximum d'équipes est atteint."]);
             }
+
+           
+
+            
         }
 
         try{

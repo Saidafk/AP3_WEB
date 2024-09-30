@@ -36,7 +36,10 @@ class MainController extends Controller
         $nbequipes = $hackathon->equipes()->count();
         $equipesmaxatteinte = $nbequipes >= $nbEquipe;
 
+        $nbPlaceRestante = $nbEquipe - $nbequipes ;
+        
 
+       
         
         // Affichage de la vue, avec les données récupérées
         return view('main.home', [
@@ -44,6 +47,9 @@ class MainController extends Controller
             'organisateur' => $hackathon->organisateur,
             'rejoindre' => $rejoindre,
             'equipesmaxatteinte' => $equipesmaxatteinte,
+            'nbPlaceRestante' => $nbPlaceRestante,
+
+            
         
         ]);
     
