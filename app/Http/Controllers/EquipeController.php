@@ -204,15 +204,22 @@ class EquipeController extends Controller
             [
                 'nom' => 'required|string|max:255',
                 'prenom' => 'required|string|max:255',
+                'email' => 'required|string|max:255',
+                'telephone' => 'required|string|max:10|min:10',
+                //'datenaissance' => 'required|string|max:255',
             ],
             [
                 'required' => 'Le champ :attribute est obligatoire.',
                 'string' => 'Le champ :attribute doit être une chaîne de caractères.',
+                //'string' => 'Veuillez rentrer les 10 numéro de votre numéro de téléphone.',
                 'max' => 'Le champ :attribute ne peut pas dépasser :max caractères.',
             ],
             [
                 'nom' => 'nom',
                 'prenom' => 'prénom',
+                'email' => 'email',
+                'telephone' => 'telephone',
+                'datenaissance' => 'datenaissance',
             ]
         );
 
@@ -221,7 +228,11 @@ class EquipeController extends Controller
             $membre = new Membre();
             $membre->nom = $request->input('nom');
             $membre->prenom = $request->input('prenom');
+            $membre->email = $request->input('email');
+            $membre->telephone = $request->input('telephone');
+            $membre->datenaissance = $request->input('datenaissance');
             $membre->idequipe = $equipe->idequipe;
+            
             $membre->save();
             EmailHelpers::sendEmail($equipe->login, "Inscription de votre équipe", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $equipe]);
             
@@ -232,6 +243,7 @@ class EquipeController extends Controller
             
         } catch (\Exception $e) {
             // Redirection vers la page de l'équipe avec un message d'erreur
+            dd($e);
             return redirect("/me")->withErrors(['errors' => "Une erreur est survenue lors de l'ajout du membre à votre équipe."]);
         }
         EmailHelpers::sendEmail($membre->idequipe, "Ajout d'un membre.", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $idequipe]);
@@ -246,8 +258,6 @@ class EquipeController extends Controller
             return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
         }
         
-        
-
 
         return view('equipe.confirmationSupression', ['membre' => $membre]);
         
@@ -279,9 +289,9 @@ class EquipeController extends Controller
             return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
         }
     
-        $equipe = Equipe::find($id); // Récupère l'équipe pour les membres
+        $equipe = Equipe::find($id); 
     
-        // Passer l'objet équipe à la vue
+        
 
         $membres = $equipe->membres;
         $nomEquipe = $equipe -> nomequipe;
@@ -289,8 +299,63 @@ class EquipeController extends Controller
         return view("equipe.afficherMembres", ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
     }
 
-    public function modifierProfile()
+    public function modifierProfile(Request $request)
     {
-        // à faire
+    
+        if (!SessionHelpers::isConnected()) {
+            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+        }
+        
+        $equipe = SessionHelpers::getConnected();
+
+       
+
+        
+            $membres = $equipe->membres;
+        $nomEquipe = $equipe -> nomequipe;
+
+        return view('equipe.modifierProfile', ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
+        }
+
+        
+      
     }
-}
+
+    /*public function misAjour(Request $request, $id){
+
+        $modifier=$request->validate([
+
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'telephone' => 'required|string|max:10|min:10',    
+        ]);
+
+        
+
+        $idequipe =Equipe::find($id);
+
+        $idequipe->nomequipe = $request->input('nomequipe');
+        $idequipe->emaillogin = $request->input('login');
+
+return redirect()->route('equipe.modifierProfile', $idequipe->id)->with('sucess');
+    }
+*/
+
+  
+    
+/*
+    public function profileajour(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+*/
+

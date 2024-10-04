@@ -48,6 +48,7 @@ Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMem
 Route::delete('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
 
 Route::get('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
+Route::post('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
 
 Route::get('/me', [EquipeController::class, 'me'])->name('me');
 
