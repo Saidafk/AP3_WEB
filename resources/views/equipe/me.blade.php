@@ -78,6 +78,12 @@
                         <input required type="text" placeholder="Prénom" name="prenom" class="form-control"/>
                     </div>
                     <div class="col">
+                        <input required type="text" placeholder="Prénom" name="prenom" class="form-control"/>
+                    </div>
+                    <div class="col">
+                        <input required type="datetime-local" placeholder="Prénom" name="prenom" class="form-control"/>
+                    </div>
+                    <div class="col">
                         <input type="submit" value="Ajouter" class="btn btn-success d-block w-100"/>
                     </div>
 
