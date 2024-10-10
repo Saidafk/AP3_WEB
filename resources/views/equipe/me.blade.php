@@ -69,21 +69,25 @@
                     
                 </ul>
 
-                <form method="post" class="row g-1" action="{{ route("membre-add") }}">
+                <form method="post" class="col-12" action="{{ route("membre-add") }}">
                     @csrf
-                    <div class="col">
+                    <div class="col-12">
                         <input required type="text" placeholder="Nom" name="nom" class="form-control"/>
                     </div>
-                    <div class="col">
+                    <div class="col-12">
                         <input required type="text" placeholder="Prénom" name="prenom" class="form-control"/>
                     </div>
-                    <div class="col">
-                        <input required type="text" placeholder="Prénom" name="prenom" class="form-control"/>
+                    <div class="col-12">
+                        <input required type="text" placeholder="Email" name="email" class="form-control"/>
                     </div>
-                    <div class="col">
-                        <input required type="datetime-local" placeholder="Prénom" name="prenom" class="form-control"/>
+                    <div class="col-12">
+                        <input required type="text" placeholder="Numéro de téléphone" name="telephone" class="form-control"/>
                     </div>
-                    <div class="col">
+                    <div class="col-12">
+                        <input required type="datetime-local" placeholder="Date de Naissance" name="datenaissance" class="form-control"/>
+                    </div>
+                    
+                    <div class="col-12">
                         <input type="submit" value="Ajouter" class="btn btn-success d-block w-100"/>
                     </div>
 

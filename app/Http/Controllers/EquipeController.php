@@ -127,7 +127,7 @@ class EquipeController extends Controller
             // Envoi d'un email permettant de confirmer l'inscription
             EmailHelpers::sendEmail($equipe->login, "Inscription de votre équipe", "email.confirmationInscription", ['equipe' => $equipe, 'hackathon' => $hackathon]);
             
-
+            
             
 
             // Connexion de l'équipe
@@ -232,6 +232,8 @@ class EquipeController extends Controller
             $membre->telephone = $request->input('telephone');
             $membre->datenaissance = $request->input('datenaissance');
             $membre->idequipe = $equipe->idequipe;
+
+            //$nomhackathon = $equipe->hackathon->thematique;
             
             $membre->save();
             EmailHelpers::sendEmail($equipe->login, "Inscription de votre équipe", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $equipe]);
@@ -243,10 +245,10 @@ class EquipeController extends Controller
             
         } catch (\Exception $e) {
             // Redirection vers la page de l'équipe avec un message d'erreur
-            dd($e);
+            
             return redirect("/me")->withErrors(['errors' => "Une erreur est survenue lors de l'ajout du membre à votre équipe."]);
         }
-        EmailHelpers::sendEmail($membre->idequipe, "Ajout d'un membre.", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $idequipe]);
+        EmailHelpers::sendEmail($membre->email, "Bienvenue dans l'équipe.", "email.ajoutMembre", [ 'equipe' => $equipe]);
         
         
         

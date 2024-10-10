@@ -24,6 +24,8 @@ class MainController extends Controller
         $dateFin= new DateTime($dateFin);
         $dateact = new DateTime($dateact);
 
+        
+
         // Vérifier si la date actuelle est avant ou égale à la date butoir
         $rejoindre = true;
 

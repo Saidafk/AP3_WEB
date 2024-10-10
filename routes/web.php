@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\ApiDocController;
-use App\Http\Controllers\EquipeController;
-use App\Http\Controllers\HackathonController;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\ParticipantController;
-use App\Http\Middleware\IsEquipeConnected;
 use App\Models\Equipe;
 use App\Utils\SessionHelpers;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\ApiDocController;
+use App\Http\Controllers\EquipeController;
+use App\Http\Middleware\IsEquipeConnected;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HackathonController;
+use App\Http\Controllers\ParticipantController;
 
 include('inc/api.php');
 
@@ -47,8 +48,8 @@ Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres']
 Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
 Route::delete('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
 
-Route::get('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
-Route::post('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
+Route::get('/modifierProfile', [ProfileController::class, 'modifierProfile'])->name('modifierProfile');
+Route::post('/modifierProfile', [ProfileController::class, 'miseAjourProfile'])->name('miseAjourProfile');
 
 Route::get('/me', [EquipeController::class, 'me'])->name('me');
 

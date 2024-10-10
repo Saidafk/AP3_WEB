@@ -2,7 +2,8 @@
 
     <p>Bonjour,</p>
 
-    <p>Le membre {{ $membre->prenom }} {{ $membre->nom }} a été ajouté à votre l'équipe : {{$equipe->nomequipe}}.</p>
-
+    <p>Boujour {{ $membre->prenom }} {{ $membre->nom }} vous avez été ajouté à l'équipe : {{$equipe->nomequipe}} .</p>
     <p>Cordialement,</p>
     <p>L'équipe organisatrice</p>
+
+    
