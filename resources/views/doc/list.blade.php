@@ -3,7 +3,18 @@
 @section('title', ' - Liste des API')
 
 @section('content')
+
     <div class="documentation">
+
+    <div class="card mt-5">
+            <div class="card-body">
+                <h2 class="text-center">Vous êtes connecté en tant que administrateur</h2>
+                <div class="d-flex justify-content-center align-items-center">
+                <a href="/logoutAdmin" class="btn btn-danger btn-small">Déconnexion</a>
+                </div>
+            </div>
+        </div>
+
         <div class="card w-200">
             <div class="card-body">
                 <h2 class="text-center">Documentation API (HTML)</h2>
@@ -25,4 +36,6 @@
             </div>
         </div>
     </div>
+
+
 @endsection

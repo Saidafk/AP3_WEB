@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipe;
-use App\Models\Hackathon;
 use App\Models\Membre;
+use App\Models\Hackathon;
 use Illuminate\Http\Request;
+use App\Utils\SessionHelpers;
 
 class ApiDocController extends Controller
 {
@@ -15,6 +16,7 @@ class ApiDocController extends Controller
      */
     function liste()
     {
+        
         return view('doc.list');
     }
 
@@ -24,6 +26,7 @@ class ApiDocController extends Controller
      */
     function listeHackathons()
     {
+
         // Récupération de tous les hackathons
         $data = Hackathon::all();
 
@@ -37,6 +40,7 @@ class ApiDocController extends Controller
      */
     function listeEquipes(Request $request)
     {
+
         // Récupération de toutes les équipes
         $data = Equipe::all();
 
@@ -81,7 +85,11 @@ class ApiDocController extends Controller
     }
 
     
-   
+   function adminAcces()
+   {
+
+
+   }
 
        
     

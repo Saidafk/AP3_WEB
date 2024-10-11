@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class IsEquipeConnected
+
 {
     /**
      * Un middleware est un mécanisme de filtrage des requêtes HTTP.

@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipe;
-use App\Models\Hackathon;
 use App\Models\Membre;
+use App\Models\Hackathon;
 use Illuminate\Http\Request;
+use App\Utils\SessionHelpers;
 
 class ApiController extends Controller
 {
     /**
      * Retourne tous les hackathons présents dans la base de données.
      */
+
+    
+
+    
+
     function getAllHackathon()
     {
         return response()->json(Hackathon::all());

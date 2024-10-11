@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Equipe;
 use App\Models\Hackathon;
 use App\Models\Inscrire;
@@ -21,6 +22,11 @@ class EquipeController extends Controller
     public function login()
     {
         return view('equipe.login');
+    }
+
+    public function loginAdmin()
+    {
+        return view('doc.loginAdmin');
     }
 
     /**
@@ -65,6 +71,52 @@ class EquipeController extends Controller
         // Redirection vers la page de profil de l'équipe
         return redirect("/me");
     }
+
+    public function connectAdmin(Request $request)
+    {
+        
+        $validated = $request->validate(
+            [
+                'email' => 'required',
+                'motpasse' => 'required',
+            ],
+            [
+                'required' => 'Le champ :attribute est obligatoire.',
+                //'email' => 'Le champ :attribute doit être une adresse email valide.',
+            ],
+            [
+                'email' => 'email',
+                'motpasse' => 'mot de passe',
+            ]
+        );
+
+        
+
+        // Récupération de l'équipe avec l'email fourni
+        $admin = Admin::where('email', $validated['email'])->first();
+
+        
+
+        // Si l'équipe n'existe pas, on redirige vers la page de connexion avec un message d'erreur
+        if (!$admin) {
+            return redirect("/loginAdmin")->withErrors(['errors' => "Aucun admin n'a été trouvée avec cet email."]);
+        }
+
+        // Si le mot de passe est incorrect, on redirige vers la page de connexion avec un message d'erreur
+        // Le message d'erreur est volontairement vague pour des raisons de sécurité
+        // En cas d'erreur, on ne doit pas donner d'informations sur l'existence ou non de l'email
+        if (!password_verify($validated['motpasse'], $admin->motpasse)) {
+            return redirect("/loginAdmin")->withErrors(['errors' => "Aucun admin n'a été trouvée avec cet email."]);
+        }
+
+        
+        // Connexion de l'équipe
+        SessionHelpers::loginAdmin($admin);
+
+        // Redirection vers la page de profil de l'équipe
+        return redirect("/doc-api");
+    }
+
 
     /**
      * Méthode de création d'une équipe.
@@ -160,6 +212,17 @@ class EquipeController extends Controller
         return redirect()->route('home');
     }
 
+    public function logoutAdmin()
+    {
+        SessionHelpers::logoutAdmin();
+        return redirect()->route('home');
+    }
+
+    public function quitterHackathon()
+    {
+        $hackathon = Hackathon::getActiveHackathon();
+        return redirect()->route('home');
+    }
 
     /**
      * Méthode de visualisation de la page de profil de l'équipe.
@@ -301,7 +364,7 @@ class EquipeController extends Controller
         return view("equipe.afficherMembres", ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
     }
 
-    public function modifierProfile(Request $request)
+    /*public function modifierProfile(Request $request)
     {
     
         if (!SessionHelpers::isConnected()) {
@@ -318,46 +381,51 @@ class EquipeController extends Controller
 
         return view('equipe.modifierProfile', ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
         }
-
+*/
         
       
+    
+
+    public function modifierProfile()
+    {
+        if (!SessionHelpers::isConnected()) {
+            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+        }
+
+        //$equipe = SessionHelpers::getConnected();
+
+        return view('equipe.modifierProfile');
     }
 
-    /*public function misAjour(Request $request, $id){
+    public function miseAjourProfile(Request $request)
+    {
+        if (!SessionHelpers::isConnected()) {
+            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+        }
 
-        $modifier=$request->validate([
+        $equipe = SessionHelpers::getConnected();
 
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            'telephone' => 'required|string|max:10|min:10',    
+        $request->validate([
+            'nomequipe' => 'required|string|max:255',
+            'login' => 'required|string|max:255',
+
+            'password' => 'nullable|string|min:6|confirmed',
         ]);
 
         
-
-        $idequipe =Equipe::find($id);
-
-        $idequipe->nomequipe = $request->input('nomequipe');
-        $idequipe->emaillogin = $request->input('login');
-
-return redirect()->route('equipe.modifierProfile', $idequipe->id)->with('sucess');
-    }
-*/
-
-  
-    
-/*
-    public function profileajour(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $equipe->nomequipe = $request->nomequipe;
+        $equipe->login = $request->login;
+        $equipe->lienprototype = $request->lienprtotype;
+                
+        if ($request->filled('password')) {
+            $equipe->password = bcrypt($request->password);
         }
 
-        $request->user()->save();
+        $equipe->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return view('equipe.modifierProfile')->with('success', 'Profile mis à jour.');
     }
-*/
+
+}
+
 

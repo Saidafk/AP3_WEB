@@ -21,13 +21,18 @@
     <form method="POST" action="{{ route('miseAjourProfile') }}"> 
             @csrf
             <div class="mb-3">
-                <label for="nom" class="form-label">Nom de l'équipe</label>
-                <input type="text" class="form-control" id="nom" name="nom" value="{{ old('nom', $equipe->nom) }}" required>
+                <label for="nomequipe" class="form-label">Nom de l'équipe</label>
+                <input type="text" class="form-control" id="nomequipe" name="nomequipe" value="{{ old('nomequipe') }}" required>
             </div>
 
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $equipe->email) }}" required>
+                <label for="lienprototype" class="form-label">Lien de votre prototype</label>
+                <input type="text" class="form-control" id="lienprototype" name="lienprototype" value="{{ old('lienprototype') }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="login" class="form-label">Email</label>
+                <input type="login" class="form-control" id="login" name="login" value="{{ old('login') }}" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe (laisser vide pour ne pas changer)</label>
