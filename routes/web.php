@@ -59,6 +59,9 @@ Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres']
 Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
 Route::delete('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
 
+Route::get('/Desinscription', [EquipeController::class, 'Desinscription'])->name('Desinscription');
+Route::delete('/confirmationDesinscription', [EquipeController::class, 'confirmationDesinscription'])->name('confirmationDesinscription');
+
 Route::get('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
 Route::post('/modifierProfile', [EquipeController::class, 'miseAjourProfile'])->name('miseAjourProfile');
 

@@ -47,7 +47,7 @@
             <div class="card-actions">
                 <a href="/modifierProfile" class="btn btn-primary">Modifier votre profile</a>
                 <a href="/logout" class="btn btn-danger btn-small">Déconnexion</a>
-                <a href="/quitterHackathon" class="btn btn-danger btn-small">Quitter le hackathon</a>
+                <a href="/Desinscription" class="btn btn-danger btn-small">Quitter le hackathon</a>
             </div>
         </div>
 

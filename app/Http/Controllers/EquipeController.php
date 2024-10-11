@@ -325,12 +325,20 @@ class EquipeController extends Controller
         
 
         return view('equipe.confirmationSupression', ['membre' => $membre]);
-        
+                             
+    }
+
+ public function desinscription (Equipe $equipe){
+
+        if (!SessionHelpers::isConnected()) {
+            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
+        }
         
 
-        
-       
+        return view('equipe.confirmationDesinscription', ['equipe' => $equipe]);
+                             
     }
+
 
     public function confirmationSupression (Membre $membre){
 
@@ -343,6 +351,16 @@ class EquipeController extends Controller
         return redirect()->route('me')->with('success', 'Membre supprimé avec succès.');
     }
 
+
+    public function confirmationDesinscription (Equipe $equipe){
+
+        if (!SessionHelpers::isConnected()) {
+            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
+        }
+
+
+        return redirect()->route('me')->with('success', 'Vous venez de quitter le hackathon');
+    }
 
     
 
