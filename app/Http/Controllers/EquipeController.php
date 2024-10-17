@@ -328,17 +328,45 @@ class EquipeController extends Controller
                              
     }
 
- public function desinscription (Equipe $equipe){
 
-        if (!SessionHelpers::isConnected()) {
-            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
-        }
-        
-
-        return view('equipe.confirmationDesinscription', ['equipe' => $equipe]);
-                             
+    public function desinscription()
+{
+    
+    if (!SessionHelpers::isConnected()) {
+        return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour effectuer cette action."]);
     }
 
+    $equipe = SessionHelpers::getConnected();
+    $hackathon = $equipe->hackathons()->first();
+
+    if (!$hackathon) {
+        return redirect("/me")->withErrors(['errors' => "Votre équipe n'est pas inscrite à un hackathon."]);
+    }
+
+    return view('equipe.confirmationDesinscription', ['equipe' => $equipe, 'hackathon' => $hackathon]);
+}
+
+    
+public function confirmationDesinscription(Request $request)
+{
+    if (!SessionHelpers::isConnected()) {
+        return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
+    }
+
+    $equipe = SessionHelpers::getConnected();
+    $hackathon_id = $request->input('hackathon_id');
+    $hackathon = Hackathon::find($hackathon_id);
+
+    if ($hackathon) {
+            Inscrire::where('idequipe', $equipe->idequipe)
+            ->where('idhackathon', $hackathon->idhackathon)
+            ->update(['datedesinscription' => now()]);
+
+        return redirect("/me")->with(['succes', 'Vous avez quitté le hackathon avec succès.']);
+    }
+
+    return redirect()->back()->withErrors(['errors' => "Erreur lors de la désinscription."]);
+}
 
     public function confirmationSupression (Membre $membre){
 
@@ -352,7 +380,7 @@ class EquipeController extends Controller
     }
 
 
-    public function confirmationDesinscription (Equipe $equipe){
+    /*public function confirmationDesinscription (Equipe $equipe){
 
         if (!SessionHelpers::isConnected()) {
             return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
@@ -360,7 +388,7 @@ class EquipeController extends Controller
 
 
         return redirect()->route('me')->with('success', 'Vous venez de quitter le hackathon');
-    }
+    }*/
 
     
 
@@ -372,7 +400,7 @@ class EquipeController extends Controller
             return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
         }
     
-        $equipe = Equipe::find($id); 
+        $equipe = Equipe::find($id);
     
         
 
@@ -442,6 +470,18 @@ class EquipeController extends Controller
         $equipe->save();
 
         return view('equipe.modifierProfile')->with('success', 'Profile mis à jour.');
+    }
+
+    public function telechargerLesDonnees(Request $request)
+    {
+        if (!SessionHelpers::isConnected()) {
+            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+        }
+        
+        if (!SessionHelpers::AdminisConnected()) {
+            return redirect("/loginAdmin")->withErrors(['errors' => "Vous devez être connecté en tant que admin pour accéder à cette page."]);
+        }
+
     }
 
 }

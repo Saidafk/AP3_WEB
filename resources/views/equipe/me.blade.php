@@ -2,6 +2,10 @@
 
 @section('title', ' - Mon équipe')
 
+@section('custom-css')
+<link href="{{ asset('css/about.css') }}" rel="stylesheet"/>
+@endsection
+
 @section('content')
     <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg fullContainer">
 
@@ -47,7 +51,7 @@
             <div class="card-actions">
                 <a href="/modifierProfile" class="btn btn-primary">Modifier votre profile</a>
                 <a href="/logout" class="btn btn-danger btn-small">Déconnexion</a>
-                <a href="/Desinscription" class="btn btn-danger btn-small">Quitter le hackathon</a>
+                <a href="/desinscription" class="btn btn-danger btn-small">Quitter le hackathon</a>
             </div>
         </div>
 

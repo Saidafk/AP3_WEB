@@ -68,4 +68,13 @@ class HackathonController extends Controller
             
         }
     }
+
+    public function voirLesHackathons()
+{
+    
+    $hackathonspasses = Hackathon::where('dateheurefinh', '<', now())->orderBy('dateheurefinh', 'desc')->get();
+    $hackathonsfuturs = Hackathon::where('dateheuredebuth', '>', now())->orderBy('dateheuredebuth', 'asc')->get();
+
+    return view('hackathon.afficherHackathon', compact('hackathonspasses', 'hackathonsfuturs'));
+}
 }

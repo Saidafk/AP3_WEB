@@ -34,7 +34,9 @@ Route::any('/create-team', [EquipeController::class, 'create'])->name('create-te
 
 Route::middleware(IsAdminConnected::class)->group(function () {
     Route::get('/logoutAdmin', [EquipeController::class, 'logoutAdmin'])->name('logoutAdmin');
-// Routes de l'API pour la documentation et les listes
+
+    Route::post('/telechargement', [EquipeController::class, 'telechargerLesDonnees'])->name('telechargerLesDonnees');
+
 Route::get('/doc-api', [ApiDocController::class, 'liste'])->name('doc-api');
 //Route::get('/doc-api/admin', [ApiDocController::class, 'adminAcces'])->name('adminAcces');
 Route::get('/doc-api/hackathons', [ApiDocController::class, 'listeHackathons'])->name('doc-api-hackathons');
@@ -59,13 +61,19 @@ Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres']
 Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
 Route::delete('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
 
-Route::get('/Desinscription', [EquipeController::class, 'Desinscription'])->name('Desinscription');
-Route::delete('/confirmationDesinscription', [EquipeController::class, 'confirmationDesinscription'])->name('confirmationDesinscription');
+Route::get('/desinscription', [EquipeController::class, 'desinscription'])->name('desinscription');
+Route::post('/confirmation-desinscription', [EquipeController::class, 'confirmationDesinscription'])->name('confirmationDesinscription');
+
+//Route::get('/Desinscription', [EquipeController::class, 'Desinscription'])->name('Desinscription');
+//Route::delete('/confirmationDesinscription', [EquipeController::class, 'confirmationDesinscription'])->name('confirmationDesinscription');
 
 Route::get('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
 Route::post('/modifierProfile', [EquipeController::class, 'miseAjourProfile'])->name('miseAjourProfile');
 
 Route::get('/me', [EquipeController::class, 'me'])->name('me');
 
+
+
 });
 
+Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');

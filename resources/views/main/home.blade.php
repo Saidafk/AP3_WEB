@@ -36,7 +36,7 @@
                 @endif
 
                 <div class="d-flex flex-wrap pt-3">
-                
+                <a class="btn bg-green m-2 button-home" href="{{ route('voirLesHackathons') }}"> Voir les Hacktahons </a>
                 @if ($rejoindre && !$equipesmaxatteinte)
                     <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
                     <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
@@ -68,6 +68,7 @@
 
                           
                         <a class="btn btn-sm btn-primary" :href="`/afficherMembres/${p['idequipe']}`"> Membres </a>
+                        
                     
                     </li>
                 </ul>
