@@ -77,3 +77,5 @@ Route::get('/me', [EquipeController::class, 'me'])->name('me');
 });
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
+
+//Route::get('/hackathons',[HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');

@@ -32,7 +32,7 @@
 
                 <h3>Bienvenue "{{ $connected->nomequipe }}"</h3>
 
-                @if ($hackathon != null)
+                @if ($hackathon != null && $hackathon->pivot->datedesinscription == null)
                     <h5>Votre équipe est inscrite au Hackathon <br><br> « {{ $hackathon->thematique }} »</h5>
                     
                     <br/>
@@ -51,12 +51,16 @@
             <div class="card-actions">
                 <a href="/modifierProfile" class="btn btn-primary">Modifier votre profile</a>
                 <a href="/logout" class="btn btn-danger btn-small">Déconnexion</a>
+                @if($hackathon->pivot->datedesinscription == null)
                 <a href="/desinscription" class="btn btn-danger btn-small">Quitter le hackathon</a>
+                @endif
             </div>
         </div>
 
         <div class="card cardRadius mt-3">
             <div class="card-body">
+
+
                 <h3 class="text-start">Membres de votre équipe</h3>
 
                 <ul class="p-0 m-0 mb-2">

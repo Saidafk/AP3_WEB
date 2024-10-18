@@ -7,6 +7,7 @@ use App\Models\Hackathon;
 use App\Models\Inscrire;
 use Illuminate\Http\Request;
 use App\Utils\SessionHelpers;
+use Termwind\Components\Hr;
 
 class HackathonController extends Controller
 {
@@ -69,12 +70,29 @@ class HackathonController extends Controller
         }
     }
 
-    public function voirLesHackathons()
+    public function voirLesHackathons(Request $request)
 {
-    
-    $hackathonspasses = Hackathon::where('dateheurefinh', '<', now())->orderBy('dateheurefinh', 'desc')->get();
-    $hackathonsfuturs = Hackathon::where('dateheuredebuth', '>', now())->orderBy('dateheuredebuth', 'asc')->get();
 
-    return view('hackathon.afficherHackathon', compact('hackathonspasses', 'hackathonsfuturs'));
+    $hackathonspasses = Hackathon::where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
+    $hackathonsfuturs = Hackathon::where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
+
+
+    //dd($hackathonsfuturs,$hackathonspasses);
+
+    return view('hackathon.afficherHackathon', ['hackathonspasses' => $hackathonspasses, 'hackathonsfuturs' => $hackathonsfuturs]);
+}
+
+public function afficherParticipation($idequipe, $idhackathon){
+
+    $inscription = Inscrire::where('idequipe', $idequipe)->where('idhackathon', $idhackathon)->exist();
+
+    
+
+    $equipe = Equipe::find($idequipe);
+
+    
+    
+
+    return view('hackathon.afficherHackathon', ['inscription' => $inscription, 'equipe' => $equipe]);
 }
 }

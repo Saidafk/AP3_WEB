@@ -191,6 +191,7 @@ class EquipeController extends Controller
                 'idequipe' => $equipe->idequipe,
                 'idhackathon' => $hackathon->idhackathon,
                 'dateinscription' => date('Y-m-d H:i:s'),
+                'datedesinscription' => date('Y-m-d H:i:s'),
             ]);
 
             // Redirection vers la page de profil de l'équipe avec un message de succès
@@ -354,13 +355,15 @@ public function confirmationDesinscription(Request $request)
     }
 
     $equipe = SessionHelpers::getConnected();
-    $hackathon_id = $request->input('hackathon_id');
-    $hackathon = Hackathon::find($hackathon_id);
+    $hackathon = $equipe->hackathons()->first();
 
     if ($hackathon) {
+        
             Inscrire::where('idequipe', $equipe->idequipe)
             ->where('idhackathon', $hackathon->idhackathon)
             ->update(['datedesinscription' => now()]);
+
+            
 
         return redirect("/me")->with(['succes', 'Vous avez quitté le hackathon avec succès.']);
     }

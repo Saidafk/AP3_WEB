@@ -13,9 +13,12 @@
     <ul>
         @foreach ($hackathonsfuturs as $hackathon)
             <li>
+                 
+                
                 <strong>{{ $hackathon->thematique }}</strong> 
                 - du {{ $hackathon->dateheuredebuth }} au {{ $hackathon->dateheurefinh }} 
                 à {{ $hackathon->ville }}
+                
             </li>
         @endforeach
     </ul>
@@ -24,9 +27,12 @@
     <ul>
         @foreach ($hackathonspasses as $hackathon)
             <li>
+            
+            
                 <strong>{{ $hackathon->thematique }}</strong> 
                 - du {{ $hackathon->dateheuredebuth }} au {{ $hackathon->dateheurefinh }} 
                 à {{ $hackathon->ville }}
+                
             </li>
         @endforeach
     </ul>
