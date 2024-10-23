@@ -56,16 +56,13 @@ Route::middleware(isEquipeConnected::class)->group(function () {
 Route::get('/afficherMembres/{id}', [EquipeController::class, 'afficherMembres'])->name('afficherMembres');
 
 
-//Route::get('/', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
+
 
 Route::get('/supressionMembre/{membre}', [EquipeController::class, 'supprimerMembre'])->name('supprimerMembre');
 Route::delete('/confirmationSupression/{membre}', [EquipeController::class, 'confirmationSupression'])->name('confirmationSupression');
 
 Route::get('/desinscription', [EquipeController::class, 'desinscription'])->name('desinscription');
 Route::post('/confirmation-desinscription', [EquipeController::class, 'confirmationDesinscription'])->name('confirmationDesinscription');
-
-//Route::get('/Desinscription', [EquipeController::class, 'Desinscription'])->name('Desinscription');
-//Route::delete('/confirmationDesinscription', [EquipeController::class, 'confirmationDesinscription'])->name('confirmationDesinscription');
 
 Route::get('/modifierProfile', [EquipeController::class, 'modifierProfile'])->name('modifierProfile');
 Route::post('/modifierProfile', [EquipeController::class, 'miseAjourProfile'])->name('miseAjourProfile');
@@ -78,4 +75,7 @@ Route::get('/me', [EquipeController::class, 'me'])->name('me');
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
 
-//Route::get('/hackathons',[HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');
+//Route::get('/mesParticipation/{idequipe}/{idhackathon}', [HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');
+
+
+//Route::get('/hackathons/{idequipe}/{idhackathon}', [HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');

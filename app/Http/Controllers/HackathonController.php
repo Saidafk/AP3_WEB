@@ -71,28 +71,27 @@ class HackathonController extends Controller
     }
 
     public function voirLesHackathons(Request $request)
-{
 
+    {
     $hackathonspasses = Hackathon::where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
     $hackathonsfuturs = Hackathon::where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
 
+    $inscrire = [];
+    $equipe = null;
 
-    //dd($hackathonsfuturs,$hackathonspasses);
-
-    return view('hackathon.afficherHackathon', ['hackathonspasses' => $hackathonspasses, 'hackathonsfuturs' => $hackathonsfuturs]);
-}
-
-public function afficherParticipation($idequipe, $idhackathon){
-
-    $inscription = Inscrire::where('idequipe', $idequipe)->where('idhackathon', $idhackathon)->exist();
-
-    
-
-    $equipe = Equipe::find($idequipe);
+    if (SessionHelpers::isConnected()) {
+        $equipe = SessionHelpers::getConnected(); 
+        $inscrire = Inscrire::where('idequipe', $equipe->idequipe)
+            ->with('hackathon') 
+            ->get();
+    }
 
     
-    
-
-    return view('hackathon.afficherHackathon', ['inscription' => $inscription, 'equipe' => $equipe]);
-}
+    return view('hackathon.afficherHackathon', [
+        'hackathonspasses' => $hackathonspasses,
+        'hackathonsfuturs' => $hackathonsfuturs,
+        'inscrire' => $inscrire,
+        'equipe' => $equipe, 
+    ]);
+    }
 }

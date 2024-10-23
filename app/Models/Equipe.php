@@ -52,6 +52,11 @@ class Equipe extends Model
     {
         return $this->belongsToMany(Hackathon::class, 'INSCRIRE', 'idequipe', 'idhackathon')->withPivot('dateinscription', 'datedesinscription');
     }
+    
+    public function inscrire()
+    {
+        return $this->hasMany(Inscrire::class, 'idequipe', 'idequipe');
+    }
 
     public function tokens()
     {

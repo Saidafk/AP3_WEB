@@ -191,7 +191,6 @@ class EquipeController extends Controller
                 'idequipe' => $equipe->idequipe,
                 'idhackathon' => $hackathon->idhackathon,
                 'dateinscription' => date('Y-m-d H:i:s'),
-                'datedesinscription' => date('Y-m-d H:i:s'),
             ]);
 
             // Redirection vers la page de profil de l'équipe avec un message de succès
@@ -268,7 +267,7 @@ class EquipeController extends Controller
             [
                 'nom' => 'required|string|max:255',
                 'prenom' => 'required|string|max:255',
-                'email' => 'required|string|max:255',
+                'email' => 'required|string|max:255|email',
                 'telephone' => 'required|string|max:10|min:10',
                 //'datenaissance' => 'required|string|max:255',
             ],
@@ -455,16 +454,18 @@ public function confirmationDesinscription(Request $request)
         $equipe = SessionHelpers::getConnected();
 
         $request->validate([
-            'nomequipe' => 'required|string|max:255',
-            'login' => 'required|string|max:255',
+            'nomequipe' => 'required|string|max:255|unique:EQUIPE,nomequipe',
+            'lienprototype' => 'required|string|max:255|unique:EQUIPE,lienprototype',
+            'login' => 'required|string|max:255|email',
 
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
         
         $equipe->nomequipe = $request->nomequipe;
+        $equipe->lienprototype = $request->lienprototype;
         $equipe->login = $request->login;
-        $equipe->lienprototype = $request->lienprtotype;
+        
                 
         if ($request->filled('password')) {
             $equipe->password = bcrypt($request->password);
