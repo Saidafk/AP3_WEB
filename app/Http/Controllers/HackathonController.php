@@ -71,53 +71,64 @@ class HackathonController extends Controller
     }
 
     public function voirLesHackathons(Request $request)
-{
-    $query = Hackathon::query();
-
-    // Filtrage par thématique
-    if ($request->has('thematique') && !empty($request->thematique)) {
-        $query->where('thematique', 'LIKE', '%' . $request->thematique . '%');
+    {
+        
+        $queryFuturs = Hackathon::query();
+        $queryPasses = Hackathon::query();
+    
+        // Filtrage par ville
+        if ($request->filled('ville')) {
+            $queryFuturs->where('ville', $request->input('ville'));
+            $queryPasses->where('ville', $request->input('ville'));
+        }
+    
+        // Filtrage par date de début
+        if ($request->filled('date_debut')) {
+            $dateDebut = $request->input('date_debut');
+            
+            // Pour les hackathons à venir
+            $queryFuturs->whereDate('dateheuredebuth', '=', $dateDebut);
+            
+            // Pour les hackathons passés
+            $queryPasses->whereDate('dateheuredebuth', '=', $dateDebut);
+        }
+    
+        // Récupération des hackathons futurs
+        $hackathonsfuturs = $queryFuturs->where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
+        
+        // Récupération des hackathons passés
+        $hackathonspasses = $queryPasses->where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
+    
+        // Récupération des inscriptions pour l'équipe connectée
+        $inscrire = [];
+        $equipe = null;
+    
+        if (SessionHelpers::isConnected()) {
+            $equipe = SessionHelpers::getConnected(); 
+            $inscrire = Inscrire::where('idequipe', $equipe->idequipe)
+                ->with('hackathon') 
+                ->get();
+        }
+    
+        return view('hackathon.afficherHackathon', [
+            'hackathonsfuturs' => $hackathonsfuturs,
+            'hackathonspasses' => $hackathonspasses,
+            'inscrire' => $inscrire,
+            'equipe' => $equipe,
+        ]);
     }
+    
 
-    // Filtrage par ville
-    if ($request->has('ville') && !empty($request->ville)) {
-        $query->where('ville', 'LIKE', '%' . $request->ville . '%');
-    }
+    
 
-    // Filtrage par date (si besoin)
-    if ($request->has('date') && !empty($request->date)) {
-        $query->whereDate('dateheuredebuth', '>=', $request->date);
-    }
 
-    // Récupération des hackathons passés et futurs
-    $hackathonspasses = Hackathon::where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
-    $hackathonsfuturs = Hackathon::where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
-
-    // Récupération des inscriptions pour l'équipe connectée
-    $inscrire = [];
-    $equipe = null;
-
-    if (SessionHelpers::isConnected()) {
-        $equipe = SessionHelpers::getConnected(); 
-        $inscrire = Inscrire::where('idequipe', $equipe->idequipe)
-            ->with('hackathon') 
-            ->get();
-    }
-
-    return view('hackathon.afficherHackathon', [
-        'hackathonspasses' => $hackathonspasses,
-        'hackathonsfuturs' => $hackathonsfuturs,
-        'inscrire' => $inscrire,
-        'equipe' => $equipe,
-    ]);
-}
 
     public function voirLesInfoHackathon($idhackathon)
 {
     $hackathon = Hackathon::findOrFail($idhackathon);
 
     $nbequipes = $hackathon->equipes()->count();
-    $nbEquipe = $hackathon->nbEquipe; // Assurez-vous que nbEquipe existe dans le modèle Hackathon
+    $nbEquipe = $hackathon->nbEquipe; 
 
     $equipesmaxatteinte = $nbequipes >= $nbEquipe;
     $nbPlaceRestante = $nbEquipe - $nbequipes;
