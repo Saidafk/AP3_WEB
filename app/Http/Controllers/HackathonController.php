@@ -71,11 +71,29 @@ class HackathonController extends Controller
     }
 
     public function voirLesHackathons(Request $request)
+{
+    $query = Hackathon::query();
 
-    {
+    // Filtrage par thématique
+    if ($request->has('thematique') && !empty($request->thematique)) {
+        $query->where('thematique', 'LIKE', '%' . $request->thematique . '%');
+    }
+
+    // Filtrage par ville
+    if ($request->has('ville') && !empty($request->ville)) {
+        $query->where('ville', 'LIKE', '%' . $request->ville . '%');
+    }
+
+    // Filtrage par date (si besoin)
+    if ($request->has('date') && !empty($request->date)) {
+        $query->whereDate('dateheuredebuth', '>=', $request->date);
+    }
+
+    // Récupération des hackathons passés et futurs
     $hackathonspasses = Hackathon::where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
     $hackathonsfuturs = Hackathon::where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
 
+    // Récupération des inscriptions pour l'équipe connectée
     $inscrire = [];
     $equipe = null;
 
@@ -86,12 +104,28 @@ class HackathonController extends Controller
             ->get();
     }
 
-    
     return view('hackathon.afficherHackathon', [
         'hackathonspasses' => $hackathonspasses,
         'hackathonsfuturs' => $hackathonsfuturs,
         'inscrire' => $inscrire,
-        'equipe' => $equipe, 
+        'equipe' => $equipe,
     ]);
-    }
+}
+
+    public function voirLesInfoHackathon($idhackathon)
+{
+    $hackathon = Hackathon::findOrFail($idhackathon);
+
+    $nbequipes = $hackathon->equipes()->count();
+    $nbEquipe = $hackathon->nbEquipe; // Assurez-vous que nbEquipe existe dans le modèle Hackathon
+
+    $equipesmaxatteinte = $nbequipes >= $nbEquipe;
+    $nbPlaceRestante = $nbEquipe - $nbequipes;
+
+    return view('hackathon.infoHackathon', [
+        'hackathon' => $hackathon,
+        'nbPlaceRestante' => $nbPlaceRestante,
+        'equipesmaxatteinte' => $equipesmaxatteinte,
+    ]);
+}
 }
