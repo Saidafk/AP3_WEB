@@ -117,11 +117,6 @@ class HackathonController extends Controller
             'equipe' => $equipe,
         ]);
     }
-    
-
-    
-
-
 
     public function voirLesInfoHackathon($idhackathon)
 {
