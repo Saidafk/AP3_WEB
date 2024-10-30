@@ -76,6 +76,12 @@ Route::get('/hackathons/{idhackathon}', [HackathonController::class, 'voirLesInf
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
 
+Route::get('/commentaireHackathon/{idhackathon}', [HackathonController::class, 'commentaireHackathon'])->name('commentaireHackathon');
+
+Route::post('/hackathons/{idhackathon}/commentaire', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
+
+
+
 //Route::get('/mesParticipation/{idequipe}/{idhackathon}', [HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');
 
 

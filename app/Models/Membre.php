@@ -19,4 +19,9 @@ class Membre extends Model
     {
         return $this->belongsTo(Equipe::class, 'idequipe');
     }
+
+    public function commentaire()
+    {
+        return $this->hasMany(Commentaire::class, 'idmembre');
+    }
 }

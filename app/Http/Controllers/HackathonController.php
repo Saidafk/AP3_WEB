@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Equipe;
 use App\Models\Hackathon;
 use App\Models\Inscrire;
+use App\Models\Commentaire; 
+
 use Illuminate\Http\Request;
 use App\Utils\SessionHelpers;
 use Termwind\Components\Hr;
@@ -134,4 +136,38 @@ class HackathonController extends Controller
         'equipesmaxatteinte' => $equipesmaxatteinte,
     ]);
 }
+
+    public function commentaireHackathon($idhackathon)
+    {
+
+        $hackathon = Hackathon::find($idhackathon);
+        $commentaire = $hackathon->commentaire()->with('membre')->get();
+
+
+ return view('hackathon.commentaireHackathon', [
+    'hackathon' => $hackathon, 
+    'commentaire' => $commentaire,
+    ]);
+    }
+
+
+    public function ajoutCommentaire(Request $request, $idhackathon)
+    {
+
+        $request->validate([
+            'message' => 'required|string|max:500',
+        ]);
+    
+        
+        Commentaire::create([ 
+            'idhackathon' => $idhackathon,
+            'idmembre' => auth()->id(),
+            'contenu' => $request->input('message'),
+        ]);
+    
+        
+        return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon])
+                         ->with('success', 'Commentaire ajouté avec succès.');
+}
+
 }

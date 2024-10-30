@@ -39,4 +39,10 @@ class Hackathon extends Model
     {
         return $this->hasMany(Inscrire::class, 'idhackathon', 'idhackathon');
     }
+
+    public function commentaire()
+    {
+        return $this->hasMany(Commentaire::class, 'idhackathon');
+    }
+
 }
