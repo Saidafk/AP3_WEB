@@ -143,31 +143,45 @@ public function commentaireHackathon($idhackathon)
     $hackathon = Hackathon::find($idhackathon);
 
 
-    $commentaire = $hackathon->commentaire()->with('equipe')->get();
+    $commentaires = $hackathon->commentaire()->with('equipe')->get();
 
     
 return view('hackathon.commentaireHackathon', [
 'hackathon' => $hackathon, 
-'commentaire' => $commentaire,
+'commentaires' => $commentaires,
 ]);
 
 }
 
 
-/*public function ajoutCommentaire(Request $request, $idhackathon)
+public function ajoutCommentaire(Request $request, $idhackathon)
 {
+    $equipe = SessionHelpers::getConnected();
+
+    // Récupération du hackathon
+    $hackathon = Hackathon::findOrFail($idhackathon);
+
     $request->validate([
         'contenu' => 'required|string|max:255',
     ]);
 
+    // Création d'un nouveau commentaire
     $commentaire = new Commentaire();
     $commentaire->contenu = $request->input('contenu');
-    $commentaire->idequipe = auth()->user()->idequipe; // Remplacez par la méthode pour obtenir l'id de l'équipe connectée
+    $commentaire->idequipe = $equipe->idequipe; 
     $commentaire->idhackathon = $idhackathon;
-    $commentaire->save();
+    $commentaire->save(); // Save the comment
+
+    // Récupérer tous les commentaires après l'ajout
+    $commentaires = Commentaire::where('idhackathon', $idhackathon)->get();
+
+    
 
     return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon])
-                     ->with('success', 'Commentaire ajouté avec succès.');
+    ->with('success', 'Commentaire ajouté avec succès.');
+
+
+                 
 }
-*/
+
 }

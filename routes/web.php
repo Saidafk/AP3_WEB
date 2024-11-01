@@ -83,7 +83,7 @@ Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->na
 
 Route::get('/commentaire/{idhackathon}', [HackathonController::class, 'commentaireHackathon'])->name('commentaireHackathon');
 
-//Route::post('/commentaire/{idhackathon}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
+Route::post('/commentaire/{idhackathon}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
 
 
 
