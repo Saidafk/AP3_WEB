@@ -476,16 +476,54 @@ public function confirmationDesinscription(Request $request)
         return view('equipe.modifierProfile')->with('success', 'Profile mis à jour.');
     }
 
-    public function telechargerLesDonnees(Request $request)
+
+    public function telechargerLesDonnees()
     {
-        if (!SessionHelpers::isConnected()) {
-            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
-        }
-        
         if (!SessionHelpers::AdminisConnected()) {
-            return redirect("/loginAdmin")->withErrors(['errors' => "Vous devez être connecté en tant que admin pour accéder à cette page."]);
+            return redirect("/loginAdmin")->withErrors(['errors' => "Vous devez être connecté en tant qu'admin pour accéder à cette page."]);
         }
 
+        $equipe = SessionHelpers::getConnected(); 
+        
+        
+        $membres = $equipe->membres; 
+
+        
+
+        return view('equipe.telechargement', ['equipe' => $equipe, 'membres' => $membres ]);
+
+    }
+
+    public function confirmationTelechargerLesDonnees( Request $request)
+        {
+           
+            if (!SessionHelpers::AdminisConnected()) {
+                return redirect("/loginAdmin")->withErrors(['errors' => "Vous devez être connecté en tant qu'admin pour accéder à cette page."]);
+            }
+         
+        
+            $equipe = SessionHelpers::getConnected(); 
+        
+            $administrateur = SessionHelpers::AdmingetConnected();
+
+            $idequipe = $equipe->idequipe;
+    
+        $adminEmail = $administrateur->email; 
+     
+        $membres = Membre::where('idequipe', $idequipe)->get();
+
+
+        //dd($equipe, $membres);
+        //dd($equipe, $adminEmail);
+
+        EmailHelpers::sendEmail(
+            $adminEmail,  
+            "Confirmation de téléchargement des données de l'équipe",
+            "email.confirmationTelechargement", 
+            ['equipe' => $equipe, 'membres' => $membres]
+        );
+
+        return redirect("/me")->with(['succes', 'Données télechargées.']);
     }
 
 }

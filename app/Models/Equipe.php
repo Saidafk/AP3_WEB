@@ -62,4 +62,9 @@ class Equipe extends Model
     {
         return $this->hasMany(Token::class, 'idequipe');
     }
+
+    public function commentaire()
+    {
+        return $this->hasMany(Commentaire::class, 'idequipe'); 
+    }
 }

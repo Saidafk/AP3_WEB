@@ -65,7 +65,7 @@
                     au {{ $inscription->hackathon->dateheurefinh}} 
                     à {{ $inscription->hackathon->ville }}
                     <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" class="btn btn-primary">Info sur le Hackathon</a>
-                    <a href="{{ route('commentaireHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" class="btn btn-primary">Message</a>
+                    <a href="{{ route('commentaireHackathon', ['idhackathon' => $inscription->hackathon->idhackathon, 'idequipe' => $equipe->idequipe]) }}" class="btn btn-primary">Message</a>
                 </li>
             @endforeach
         </ul>

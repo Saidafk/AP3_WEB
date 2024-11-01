@@ -58,6 +58,15 @@ class SessionHelpers
     }
 
     /**
+     * Retourne l'admin connectée, ou null si aucun admin n'est connectée
+     * @return Admin|null
+     */
+    static function AdmingetConnected(): ?Admin
+    {
+        return session(self::$sessionAdminKey, null);
+    }
+
+    /**
      * Vérifie si une équipe est connectée. Retourne true si une équipe est connectée, false sinon
      * @return bool
      */

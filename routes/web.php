@@ -35,7 +35,10 @@ Route::any('/create-team', [EquipeController::class, 'create'])->name('create-te
 Route::middleware(IsAdminConnected::class)->group(function () {
     Route::get('/logoutAdmin', [EquipeController::class, 'logoutAdmin'])->name('logoutAdmin');
 
-    Route::post('/telechargement', [EquipeController::class, 'telechargerLesDonnees'])->name('telechargerLesDonnees');
+    Route::get('/telechargement', [EquipeController::class, 'telechargerLesDonnees'])->name('telechargerLesDonnees');
+
+    Route::post('/telechargement', [EquipeController::class, 'confirmationTelechargerLesDonnees'])->name('confirmationTelechargerLesDonnees');
+
 
 Route::get('/doc-api', [ApiDocController::class, 'liste'])->name('doc-api');
 //Route::get('/doc-api/admin', [ApiDocController::class, 'adminAcces'])->name('adminAcces');
@@ -76,9 +79,10 @@ Route::get('/hackathons/{idhackathon}', [HackathonController::class, 'voirLesInf
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
 
-Route::get('/commentaireHackathon/{idhackathon}', [HackathonController::class, 'commentaireHackathon'])->name('commentaireHackathon');
+//Route::get('/hackathon/commentaires/{idhackathon}', [HackathonController::class, 'commentaireHackathon'])->name('commentaireHackathon');
 
-Route::post('/hackathons/{idhackathon}/commentaire', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
+Route::get('/hackathon/commentaire/{idhackathon}/{idequipe}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
+Route::post('/hackathon/commentaire/{idhackathon}/{idequipe}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
 
 
 

@@ -9,7 +9,7 @@ class Commentaire extends Model
 {
     use HasFactory;
     protected $table = 'COMMENTAIRE';
-    protected $fillable = ['contenu', 'idmembre', 'idhackathon']; 
+    protected $fillable = ['contenu','idequipe', 'idmembre', 'idhackathon']; 
 
     public function hackathon()
     {
@@ -21,8 +21,8 @@ class Commentaire extends Model
         return $this->belongsTo(Membre::class, 'idmembre');
     }
 
-    public function equipes()
+    public function equipe()
     {
-        return $this->belongsToMany(Equipe::class, 'INSCRIRE', 'idhackathon', 'idequipe')->withPivot('dateinscription','datedesinscription');
+        return $this->belongsTo(Equipe::class, 'idequipe');
     }
 }

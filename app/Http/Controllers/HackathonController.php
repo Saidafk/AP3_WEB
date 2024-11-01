@@ -122,7 +122,7 @@ class HackathonController extends Controller
 
     public function voirLesInfoHackathon($idhackathon)
 {
-    $hackathon = Hackathon::findOrFail($idhackathon);
+    $hackathon = Hackathon::find($idhackathon);
 
     $nbequipes = $hackathon->equipes()->count();
     $nbEquipe = $hackathon->nbEquipe; 
@@ -137,37 +137,44 @@ class HackathonController extends Controller
     ]);
 }
 
-    public function commentaireHackathon($idhackathon)
-    {
 
-        $hackathon = Hackathon::find($idhackathon);
-        $commentaire = $hackathon->commentaire()->with('membre')->get();
-
-
- return view('hackathon.commentaireHackathon', [
-    'hackathon' => $hackathon, 
-    'commentaire' => $commentaire,
-    ]);
+    public function commentaireHackathon($idhackathon, $idequipe)
+{
+    $hackathon = Hackathon::find($idhackathon);
+    if (!$hackathon) {
+        return redirect()->back()->withErrors('Erreur : Hackathon non trouvé.');
     }
 
+    $commentaire = $hackathon->commentaire()->with('equipe')->get();
+    $equipe = Equipe::find($idequipe);
+    if (!$equipe) {
+        return redirect()->back()->withErrors('Erreur : Équipe non trouvée.');
+    }
 
-    public function ajoutCommentaire(Request $request, $idhackathon)
-    {
-
-        $request->validate([
-            'message' => 'required|string|max:500',
-        ]);
-    
-        
-        Commentaire::create([ 
-            'idhackathon' => $idhackathon,
-            'idmembre' => auth()->id(),
-            'contenu' => $request->input('message'),
-        ]);
-    
-        
-        return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon])
-                         ->with('success', 'Commentaire ajouté avec succès.');
+    return view('hackathon.commentaireHackathon', [
+        'hackathon' => $hackathon,
+        'commentaire' => $commentaire,
+        'equipe' => $equipe,
+    ]);
 }
+
+
+
+public function ajoutCommentaire(Request $request, $idhackathon, $idequipe)
+{
+    $request->validate([
+        'message' => 'required|string|max:500',
+    ]);
+
+    Commentaire::create([ 
+        'idhackathon' => $idhackathon,
+        'idequipe' => $idequipe,
+        'contenu' => $request->input('message'),
+    ]);
+
+    return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon, 'idequipe' => $idequipe])
+                     ->with('success', 'Commentaire ajouté avec succès.');
+}
+
 
 }

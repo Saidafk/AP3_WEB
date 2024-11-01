@@ -54,6 +54,8 @@
                 @if($hackathon->pivot->datedesinscription == null)
                 <a href="/desinscription" class="btn btn-danger btn-small">Quitter le hackathon</a>
                 @endif
+                <a href="{{ route('telechargerLesDonnees') }}" class="btn btn-secondary">Telechargement des données</a>
+                
             </div>
         </div>
 
