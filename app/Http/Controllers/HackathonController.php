@@ -138,43 +138,36 @@ class HackathonController extends Controller
 }
 
 
-    public function commentaireHackathon($idhackathon, $idequipe)
+public function commentaireHackathon($idhackathon)
 {
     $hackathon = Hackathon::find($idhackathon);
-    if (!$hackathon) {
-        return redirect()->back()->withErrors('Erreur : Hackathon non trouvé.');
-    }
+
 
     $commentaire = $hackathon->commentaire()->with('equipe')->get();
-    $equipe = Equipe::find($idequipe);
-    if (!$equipe) {
-        return redirect()->back()->withErrors('Erreur : Équipe non trouvée.');
-    }
 
-    return view('hackathon.commentaireHackathon', [
-        'hackathon' => $hackathon,
-        'commentaire' => $commentaire,
-        'equipe' => $equipe,
-    ]);
+    
+return view('hackathon.commentaireHackathon', [
+'hackathon' => $hackathon, 
+'commentaire' => $commentaire,
+]);
+
 }
 
 
-
-public function ajoutCommentaire(Request $request, $idhackathon, $idequipe)
+/*public function ajoutCommentaire(Request $request, $idhackathon)
 {
     $request->validate([
-        'message' => 'required|string|max:500',
+        'contenu' => 'required|string|max:255',
     ]);
 
-    Commentaire::create([ 
-        'idhackathon' => $idhackathon,
-        'idequipe' => $idequipe,
-        'contenu' => $request->input('message'),
-    ]);
+    $commentaire = new Commentaire();
+    $commentaire->contenu = $request->input('contenu');
+    $commentaire->idequipe = auth()->user()->idequipe; // Remplacez par la méthode pour obtenir l'id de l'équipe connectée
+    $commentaire->idhackathon = $idhackathon;
+    $commentaire->save();
 
-    return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon, 'idequipe' => $idequipe])
+    return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon])
                      ->with('success', 'Commentaire ajouté avec succès.');
 }
-
-
+*/
 }

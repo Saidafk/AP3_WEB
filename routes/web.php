@@ -79,14 +79,14 @@ Route::get('/hackathons/{idhackathon}', [HackathonController::class, 'voirLesInf
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
 
-//Route::get('/hackathon/commentaires/{idhackathon}', [HackathonController::class, 'commentaireHackathon'])->name('commentaireHackathon');
-
-Route::get('/hackathon/commentaire/{idhackathon}/{idequipe}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
-Route::post('/hackathon/commentaire/{idhackathon}/{idequipe}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
 
 
+Route::get('/commentaire/{idhackathon}', [HackathonController::class, 'commentaireHackathon'])->name('commentaireHackathon');
 
-//Route::get('/mesParticipation/{idequipe}/{idhackathon}', [HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');
+//Route::post('/commentaire/{idhackathon}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
 
 
-//Route::get('/hackathons/{idequipe}/{idhackathon}', [HackathonController::class, 'afficherParticipation'])->name('afficherParticipation');
+
+//Route::post('/hackathon/commentaire/{idhackathon}/{idequipe}', [HackathonController::class, 'ajoutCommentaire'])->name('ajoutCommentaire');
+
+
