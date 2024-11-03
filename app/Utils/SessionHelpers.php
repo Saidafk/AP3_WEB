@@ -66,6 +66,8 @@ class SessionHelpers
         return session(self::$sessionAdminKey, null);
     }
 
+    
+
     /**
      * Vérifie si une équipe est connectée. Retourne true si une équipe est connectée, false sinon
      * @return bool

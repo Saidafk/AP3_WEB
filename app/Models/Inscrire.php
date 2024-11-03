@@ -10,32 +10,36 @@ class Inscrire extends Model
     use HasFactory;
 
     protected $table = 'INSCRIRE';
-    protected $primaryKey = ['idhackathon', 'idequipe'];
+    protected $primaryKey = ['idequipe', 'idhackathon']; // Clé primaire composite
 
-    // Vu que la clé primaire est composée de deux colonnes, on doit spécifier que la clé primaire n'est pas auto-incrémentée
     public $incrementing = false;
     public $timestamps = false;
 
-    protected $fillable = ['idhackathon', 'idequipe', 'dateinscription','datedesinscription'];
-
-    public function getParticipations()
-{
-    $inscrire = Inscrire::with(['equipe', 'hackathon'])->get();
-
-    return view('hackathon.afficherHackathon', [
-        'inscrire' => $inscrire,
-    ]);
-}
+    protected $fillable = ['idhackathon', 'idequipe', 'dateinscription', 'datedesinscription'];
 
     public function hackathon()
     {
-    return $this->belongsTo(Hackathon::class, 'idhackathon', 'idhackathon'); // Correction du nom de la colonne
+        return $this->belongsTo(Hackathon::class, 'idhackathon', 'idhackathon');
     }
 
     public function equipe()
     {
-    return $this->belongsTo(Equipe::class, 'idequipe', 'idequipe'); // Correction du nom de la colonne
+        return $this->belongsTo(Equipe::class, 'idequipe', 'idequipe');
     }
 
+    public function getKeyName()
+    {
+        return $this->primaryKey;
+    }
 
+    public function getKeyForSaveQuery()
+    {
+        $query = $this->newQueryWithoutScopes();
+
+        foreach ($this->getKeyName() as $key) {
+            $query->where($key, '=', $this->original[$key] ?? $this->getAttribute($key));
+        }
+
+        return $query;
+    }
 }

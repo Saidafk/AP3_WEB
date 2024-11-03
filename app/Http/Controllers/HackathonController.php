@@ -11,66 +11,70 @@ use Illuminate\Http\Request;
 use App\Utils\SessionHelpers;
 use Termwind\Components\Hr;
 
-class HackathonController extends Controller
+    class HackathonController extends Controller
 {
-    public function join(Request $request){
-        // Si l'équipe n'est pas connectée, on redirige vers la page de connexion
-        if (!SessionHelpers::isConnected()) {
-            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
-        }
+    public function join(Request $request)
+{
+    if (!SessionHelpers::isConnected()) {
+        return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+    }
 
-        // Récupération de l'équipe connectée
-        $equipe = SessionHelpers::getConnected();
+    $equipe = SessionHelpers::getConnected();
+    $idh = $request->get('idh');
+
+    $idequipe = $equipe->idequipe;
+
+    $hackathon = Hackathon::find($idh);
+    if ($hackathon == null) {
+        return redirect("/")->withErrors(['errors' => "Hackathon inexistant."]);
+    }
+
+    $dateact = new \DateTime();
+    $hackathonEndDateTime = new \DateTime($hackathon->dateheurefinh);
+    $nbequipes = $hackathon->equipes()->count();
+    $equipesmaxatteinte = $nbequipes >= $hackathon->equipesmax;
+
+    $inscription = $equipe->inscrire()->where('idhackathon', $request->idh)->first();
+
+    $dateInscription = $inscription?->dateinscription; 
+    $dateDesInscription = $inscription?->datedesinscription; 
 
 
-        // Vérifier si la date butoir est dépassée ou le nombre maximum d'équipes est atteint
-       
-
-        // Le hackathon actif est en paramètre de la requête (idh en GET).
-        // À prévoir : récupérer l'id du hackathon actif depuis la base de données pour éviter les erreurs.
-
-        // Récupération de l'id du hackathon actif
-        $idh = $request->get('idh');
-        
-        if(Hackathon::find($idh) == null){
-
-            return redirect("/")->withErrors(['errors' => "Hackathon inexistant."]);
-
-            $dateact = new \DateTime();
-            $hackathonEndDateTime = new \DateTime($hackathon->dateheurefinh);
-            $nbequipes = $hackathon->equipes()->count();
-            $equipesmaxatteinte = $nbequipes >= $hackathon->equipesmax;
     
-            if ($dateact > $hackathonEndDateTime || $equipesmaxatteinte) {
-                return redirect("/")->withErrors(['errors' => "Inscription impossible : la date butoir est dépassée ou le nombre maximum d'équipes est atteint."]);
-            }
+ 
+    
+    try {
+        if ($dateInscription == null) {
 
-           
-
-            
-        }
-
-        try{
-            // Inscription de l'équipe au hackathon
             $inscription = new Inscrire();
-            $inscription->idh = $idh;
-            $inscription->ide = $equipe->idequipe;
+            $inscription->idhackathon = $idh;
+            $inscription->idequipe = $idequipe;
+            $inscription->dateinscription = now();
+            $inscription->datedesinscription = null;
+            
             $inscription->save();
 
-            // TODO : envoyer un email de confirmation à l'équipe en utilisant la classe EmailHelpers, et la méthode sendEmail (exemple présent dans le contrôleur EquipeController)
-
-            // Redirection vers la page de l'équipe
-            return redirect("/me")->with('success', "Inscription réussie, vous faites maintenant partie du hackathon.");
-        } catch (\Exception $e) {
-            // Redirection vers la page d'accueil avec un message d'erreur
-            
-            
-            
-                return redirect("/")->withErrors(['errors' => "Equipe déjà inscrite."]); 
-            
-            
+            return redirect("/")->withErrors(['success' => "Bienvenue."]);
         }
+
+        if ($dateDesInscription !== null) {
+
+            
+            Inscrire::where('idequipe', $equipe->idequipe)
+            ->where('idhackathon', $hackathon->idhackathon)
+            ->update([
+            'dateinscription' => now(),
+            'datedesinscription' => null,
+            ]);
+            
+
+        return redirect("/")->withErrors(['success' => "Votre inscription a été mise à jour."]);
     }
+} catch (\Exception $e) {
+    return redirect("/")->withErrors(['errors' => "Une erreur s'est produite : " . $e->getMessage()]);
+}
+}
+
 
     public function voirLesHackathons(Request $request)
     {

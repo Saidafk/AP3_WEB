@@ -32,7 +32,7 @@
 
                 <h3>Bienvenue "{{ $connected->nomequipe }}"</h3>
 
-                @if ($hackathon != null && $hackathon->pivot->datedesinscription == null)
+                @if ($hackathon->pivot->datedesinscription == null && $hackathon->pivot->dateinscription !== null)
                     <h5>Votre équipe est inscrite au Hackathon <br><br> « {{ $hackathon->thematique }} »</h5>
                     
                     <br/>
@@ -51,10 +51,10 @@
             <div class="card-actions">
                 <a href="/modifierProfile" class="btn btn-primary">Modifier votre profile</a>
                 <a href="/logout" class="btn btn-danger btn-small">Déconnexion</a>
-                @if($hackathon->pivot->datedesinscription == null)
+                @if($hackathon->pivot->datedesinscription == null && $hackathon->pivot->dateinscription !== null)
                 <a href="/desinscription" class="btn btn-danger btn-small">Quitter le hackathon</a>
                 @endif
-                <a href="{{ route('telechargerLesDonnees') }}" class="btn btn-secondary">Telechargement des données</a>
+                <a href="{{ route('telechargerLesDonnees') }}" class="btn btn-primary">Telechargement des données</a>
                 
             </div>
         </div>
@@ -89,7 +89,7 @@
                         <input required type="text" placeholder="Prénom" name="prenom" class="form-control"/>
                     </div>
                     <div class="col-12">
-                        <input required type="text" placeholder="Email" name="email" class="form-control"/>
+                        <input required type="email" placeholder="Email" name="email" class="form-control"/>
                     </div>
                     <div class="col-12">
                         <input required type="text" placeholder="Numéro de téléphone" name="telephone" class="form-control"/>

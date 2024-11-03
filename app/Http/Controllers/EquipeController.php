@@ -129,6 +129,11 @@ class EquipeController extends Controller
             return redirect("/me");
         }
 
+        /*if($inscrire->dateinscription = null){
+
+            return redirect("/create-team")->withErrors(['errors' => "Aucun hackathon n'est actif pour le moment. Veuillez réessayer plus tard."]);
+        }*/
+
         // Si le formulaire n'a pas été soumis, on affiche le formulaire de création d'équipe
         if (!$request->isMethod('post')) {
             return view('equipe.create', []);
@@ -235,6 +240,8 @@ class EquipeController extends Controller
             return redirect("/login");
         }
 
+        
+
         // Récupération de l'équipe connectée
         $equipe = SessionHelpers::getConnected();
 
@@ -243,6 +250,10 @@ class EquipeController extends Controller
 
         // Récupération du hackathon ou l'équipe est inscrite
         $hackathon = $equipe->hackathons()->first();
+
+        if($hackathon == null){
+            return redirect("/")->withErrors(['errors' => "Vous devez d'abord rejoindre un hackathon."]); 
+        }
 
         // Membre de l'équipe,
         // Membre::where('idequipe', $equipe->idequipe)->get(); // Ancienne méthode
@@ -274,7 +285,6 @@ class EquipeController extends Controller
             [
                 'required' => 'Le champ :attribute est obligatoire.',
                 'string' => 'Le champ :attribute doit être une chaîne de caractères.',
-                //'string' => 'Veuillez rentrer les 10 numéro de votre numéro de téléphone.',
                 'max' => 'Le champ :attribute ne peut pas dépasser :max caractères.',
             ],
             [
@@ -287,6 +297,19 @@ class EquipeController extends Controller
         );
 
         try {
+
+            $dateNaissance = new \DateTime($request->input('datenaissance'));
+            $aujourdhui = new \DateTime();
+            $age = $aujourdhui->diff($dateNaissance)->y; 
+
+            
+
+        
+        if ($age < 18 || $age > 50) {
+            return redirect("/me")->withErrors(['errors' => "L'âge doit être compris entre 18 et 50 ans."]);
+        }
+
+
             // Création du membre
             $membre = new Membre();
             $membre->nom = $request->input('nom');
