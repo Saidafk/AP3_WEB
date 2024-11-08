@@ -119,7 +119,7 @@ class ApiDocController extends Controller
         dd($conferencier,$salle);
 
     
-        return view('doc.ajouterAtelier', ['conferencier' => $conferencier]);
+        return view('doc.ajouterAtelier', ['conferencier' => $conferencier, 'salle' => $salle]);
 
     }
 
