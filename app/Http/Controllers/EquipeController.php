@@ -507,11 +507,8 @@ public function confirmationDesinscription(Request $request)
         }
 
         $equipe = SessionHelpers::getConnected(); 
-        
-        
+            
         $membres = $equipe->membres; 
-
-        
 
         return view('equipe.telechargement', ['equipe' => $equipe, 'membres' => $membres ]);
 
@@ -535,9 +532,6 @@ public function confirmationDesinscription(Request $request)
      
         $membres = Membre::where('idequipe', $idequipe)->get();
 
-
-        //dd($equipe, $membres);
-        //dd($equipe, $adminEmail);
 
         EmailHelpers::sendEmail(
             $adminEmail,  

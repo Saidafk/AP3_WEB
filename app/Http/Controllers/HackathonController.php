@@ -82,30 +82,27 @@ use Termwind\Components\Hr;
         $queryFuturs = Hackathon::query();
         $queryPasses = Hackathon::query();
     
-        // Filtrage par ville
+        
         if ($request->filled('ville')) {
             $queryFuturs->where('ville', $request->input('ville'));
             $queryPasses->where('ville', $request->input('ville'));
         }
     
-        // Filtrage par date de début
+        
         if ($request->filled('date_debut')) {
             $dateDebut = $request->input('date_debut');
             
-            // Pour les hackathons à venir
+            
             $queryFuturs->whereDate('dateheuredebuth', '=', $dateDebut);
             
-            // Pour les hackathons passés
+            
             $queryPasses->whereDate('dateheuredebuth', '=', $dateDebut);
         }
-    
-        // Récupération des hackathons futurs
+          
         $hackathonsfuturs = $queryFuturs->where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
-        
-        // Récupération des hackathons passés
+              
         $hackathonspasses = $queryPasses->where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
     
-        // Récupération des inscriptions pour l'équipe connectée
         $inscrire = [];
         $equipe = null;
     
@@ -157,34 +154,28 @@ return view('hackathon.commentaireHackathon', [
 
 }
 
-
 public function ajoutCommentaire(Request $request, $idhackathon)
 {
     $equipe = SessionHelpers::getConnected();
 
     // Récupération du hackathon
-    $hackathon = Hackathon::findOrFail($idhackathon);
+    $hackathon = Hackathon::find($idhackathon);
 
     $request->validate([
         'contenu' => 'required|string|max:255',
     ]);
 
-    // Création d'un nouveau commentaire
+    
     $commentaire = new Commentaire();
     $commentaire->contenu = $request->input('contenu');
     $commentaire->idequipe = $equipe->idequipe; 
     $commentaire->idhackathon = $idhackathon;
-    $commentaire->save(); // Save the comment
+    $commentaire->save(); 
 
-    // Récupérer tous les commentaires après l'ajout
     $commentaires = Commentaire::where('idhackathon', $idhackathon)->get();
-
-    
 
     return redirect()->route('commentaireHackathon', ['idhackathon' => $idhackathon])
     ->with('success', 'Commentaire ajouté avec succès.');
-
-
                  
 }
 

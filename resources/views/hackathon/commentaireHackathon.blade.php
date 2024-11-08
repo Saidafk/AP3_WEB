@@ -20,11 +20,13 @@
         @endforeach        
     </div> 
 
+    
     <h3>Ajouter un commentaire :</h3>
     <form action="{{ route('ajoutCommentaire', ['idhackathon' => $hackathon->idhackathon]) }}" method="POST">
         @csrf
-        <div class="form-group">
+        <div class="mb-3">
             <textarea name="contenu" class="form-control" rows="3" required></textarea>
+
         </div>
         <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
     </form>

@@ -4,6 +4,7 @@ use App\Models\Equipe;
 use App\Utils\SessionHelpers;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Administrateur;
 use App\Http\Controllers\MainController;
 use App\Http\Middleware\IsAdminConnected;
 use App\Http\Controllers\ApiDocController;
@@ -41,7 +42,10 @@ Route::middleware(IsAdminConnected::class)->group(function () {
 
 
 Route::get('/doc-api', [ApiDocController::class, 'liste'])->name('doc-api');
-//Route::get('/doc-api/admin', [ApiDocController::class, 'adminAcces'])->name('adminAcces');
+
+Route::get('/doc-api/administrateur', [ApiDocController::class, 'voirAdmin'])->name('voirAdmin');
+Route::get('/doc-api/administrateur/info', [ApiDocController::class, 'activerA2F'])->name('activerA2F');
+
 Route::get('/doc-api/hackathons', [ApiDocController::class, 'listeHackathons'])->name('doc-api-hackathons');
 Route::get('/doc-api/membres', [ApiDocController::class, 'listeMembres'])->name('doc-api-membres');
 Route::get('/doc-api/equipes', [ApiDocController::class, 'listeEquipes'])->name('doc-api-equipes');});
@@ -75,6 +79,9 @@ Route::get('/me', [EquipeController::class, 'me'])->name('me');
 
 
 });
+
+
+
 Route::get('/hackathons/{idhackathon}', [HackathonController::class, 'voirLesInfoHackathon'])->name('voirLesInfoHackathon');
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
