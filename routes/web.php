@@ -34,6 +34,9 @@ Route::any('/create-team', [EquipeController::class, 'create'])->name('create-te
 
 
 Route::middleware(IsAdminConnected::class)->group(function () {
+
+    
+
     Route::get('/logoutAdmin', [EquipeController::class, 'logoutAdmin'])->name('logoutAdmin');
 
     Route::get('/telechargement', [EquipeController::class, 'telechargerLesDonnees'])->name('telechargerLesDonnees');
@@ -42,6 +45,12 @@ Route::middleware(IsAdminConnected::class)->group(function () {
 
 
 Route::get('/doc-api', [ApiDocController::class, 'liste'])->name('doc-api');
+
+Route::get('/doc-api/administrateur/creation-atelier', [ApiDocController::class, 'pageCreation'])->name('pageCreation');
+
+Route::get('/doc-api/administrateur/modifier-atelier', [ApiDocController::class, 'pageModif'])->name('pageModif');
+
+Route::get('/doc-api/administrateur/atelier', [ApiDocController::class, 'gererLesAtelier'])->name('gererLesAtelier');
 
 Route::get('/doc-api/administrateur', [ApiDocController::class, 'voirAdmin'])->name('voirAdmin');
 Route::get('/doc-api/administrateur/info', [ApiDocController::class, 'activerA2F'])->name('activerA2F');
@@ -53,6 +62,8 @@ Route::get('/doc-api/equipes', [ApiDocController::class, 'listeEquipes'])->name(
 // Routes protégées nécessitant une session active, pour les équipes.
 // Proctection par le middleware IsEquipeConnected (voir app/Http/Middleware/IsEquipeConnected.php)
 Route::middleware(isEquipeConnected::class)->group(function () {
+
+    
     Route::get('/logout', [EquipeController::class, 'logout'])->name('logout');
 
     Route::get('/quitterHackathon', [EquipeController::class, 'quitterHackathon'])->name('quitterHackathon');

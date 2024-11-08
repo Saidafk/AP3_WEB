@@ -11,6 +11,7 @@
                 <h2 class="text-center">Vous êtes connecté en tant que administrateur</h2>
                 <div class="d-flex justify-content-center align-items-center">
                 <a class="btn btn-primary mx-3" href="/doc-api/administrateur">Admin info</a>
+                <a class="btn btn-primary mx-3" href="/doc-api/administrateur/atelier">Gerer les ateliers</a>             
                 <a href="/logoutAdmin" class="btn btn-danger btn-small">Déconnexion</a>
                 </div>
             </div>

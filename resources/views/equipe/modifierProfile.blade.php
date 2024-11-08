@@ -25,17 +25,17 @@
             @csrf
             <div class="mb-3">
                 <label for="nomequipe" class="form-label">Nom de l'équipe</label>
-                <input type="text" class="form-control" id="nomequipe" name="nomequipe" value="{{ old('nomequipe') }}" required>
+                <input type="text" class="form-control" id="nomequipe" name="nomequipe" value="{{$equipe->nomequipe }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="lienprototype" class="form-label">Lien de votre prototype</label>
-                <input type="text" class="form-control" id="lienprototype" name="lienprototype" value="{{ old('lienprototype') }}" required>
+                <input type="text" class="form-control" id="lienprototype" name="lienprototype" value="{{$equipe->lienprototype }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="login" class="form-label">Email</label>
-                <input type="login" class="form-control" id="login" name="login" value="{{ old('login') }}" required>
+                <input type="login" class="form-control" id="login" name="login" value="{{$equipe->login }}" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe (laisser vide pour ne pas changer)</label>

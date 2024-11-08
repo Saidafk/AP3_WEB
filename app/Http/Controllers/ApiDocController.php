@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Salle;
 use App\Models\Equipe;
 use App\Models\Membre;
 use App\Models\Hackathon;
+use App\Models\Conferencier;
 use Illuminate\Http\Request;
 use App\Utils\SessionHelpers;
 
@@ -93,10 +95,37 @@ class ApiDocController extends Controller
         
         $administrateur = SessionHelpers::AdmingetConnected();
 
-        dd($administrateur);
+        if($administrateur->cleA2F != null){
+          
+        }
 
+        dd($administrateur->cleA2F);
 
         return view('doc.list', ['administrateur' => $administrateur]);
+    }
+
+    function gererLesAtelier(){
+
+        $hackathonactif = Hackathon::getActiveHackathon();
+
+        return view('doc.gererLesAteliers',['$hackathonactif' => $hackathonactif]);
+    }
+
+    function pageCreation(){
+
+        $conferencier = Conferencier::all();
+        $salle = Salle::all();
+
+        dd($conferencier,$salle);
+
+    
+        return view('doc.ajouterAtelier', ['conferencier' => $conferencier]);
+
+    }
+
+    function pageModif(){
+
+        
     }
     
 }

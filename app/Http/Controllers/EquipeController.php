@@ -305,7 +305,7 @@ class EquipeController extends Controller
             
 
         
-        if ($age < 18 || $age > 50) {
+        if ($age < 16 || $age > 80) {
             return redirect("/me")->withErrors(['errors' => "L'âge doit être compris entre 18 et 50 ans."]);
         }
 
@@ -463,9 +463,9 @@ public function confirmationDesinscription(Request $request)
             return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
         }
 
-        //$equipe = SessionHelpers::getConnected();
+        $equipe = SessionHelpers::getConnected();
 
-        return view('equipe.modifierProfile');
+        return view('equipe.modifierProfile',['equipe' => $equipe ]);
     }
 
     public function miseAjourProfile(Request $request)
