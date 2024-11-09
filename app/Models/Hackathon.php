@@ -45,4 +45,6 @@ class Hackathon extends Model
         return $this->hasMany(Commentaire::class, 'idhackathon');
     }
 
+    
+
 }

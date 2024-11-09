@@ -7,6 +7,8 @@ use App\Models\Equipe;
 use App\Models\Membre;
 use App\Models\Hackathon;
 use App\Models\Conferencier;
+use App\Models\Atelier;
+use App\Models\AtelierConferencierSalle;
 use Illuminate\Http\Request;
 use App\Utils\SessionHelpers;
 
@@ -115,13 +117,50 @@ class ApiDocController extends Controller
 
         $conferencier = Conferencier::all();
         $salle = Salle::all();
+        $Atelier = Atelier::all();
 
-        dd($conferencier,$salle);
+        
+
+        //dd($conferencier,$salle,$sessionAtelier);
 
     
         return view('doc.ajouterAtelier', ['conferencier' => $conferencier, 'salle' => $salle]);
 
     }
+
+    public function creeAtelier(Request $request)
+    {
+        
+        $salle = Salle::all();
+        $conferencier = Conferencier::all();
+        $Atelier = Atelier::all();
+
+        //dd($conferencier->id_conferencier);
+
+        // Création d'un atelier
+        $atelier = new Atelier();
+        
+        $atelier->titre = $request->input('titre');
+        $atelier->description = $request->input('description');
+        $atelier->duree_minutes = $request->input('duree_minutes');
+        $atelier->save();
+
+
+        $idconferencier = $request->input('id_conferencier');  
+        $idsalle = $request->input('id_salle');  
+
+        AtelierConferencierSalle::create([
+            'id_atelier' => $atelier->id_atelier, 
+            'id_conferencier' => $idconferencier,   
+            'id_salle' => $idsalle,                 
+        ]);
+
+
+        return redirect()->route('pageCreation')
+            ->with('success', 'Événement créé avec succès!');
+    }
+
+
 
     function pageModif(){
 

@@ -10,5 +10,17 @@ class Conferencier extends Model
     use HasFactory;
 
     protected $table = 'CONFERENCIER';
-    protected $fillable = ['idConferencier','nomConferencier', 'prenomConferencier']; 
+    protected $primaryKey = 'id_conferencier';
+    protected $fillable = [
+        'nom',
+        'prenom',
+        'email',
+        'telephone',
+        'specialite'
+    ]; 
+
+    public function ateliers()
+    {
+        return $this->belongsToMany(Atelier::class, 'atelier_conferencier', 'id_conferencier', 'id_atelier');
+    }
 }

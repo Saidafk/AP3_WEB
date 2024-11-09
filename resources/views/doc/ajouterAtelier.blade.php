@@ -13,38 +13,39 @@
     @csrf
 
     <div>
-        <label for="nomAtelier">nom de l'atelier</label>
-        <input type="text" name="nomAtelier" id="nomAtelier">
+        <label for="titre">nom de l'atelier</label>
+        <input type="text" name="titre" id="titre">
     </div>
 
     <div>
-        <label for="datedebut">date du debut de l'atelier</label>
-        <input type="date" name="datedebut" id="datedebut">
+        <label for="description">Description de l'atelier</label>
+        <input type="text" name="description" id="description">
     </div>
 
     <div>
-        <label for="datefin">date de fin de l'atelier</label>
-        <input type="date" name="datefin" id="datefin">
+        <label for="duree_minutes">Durée de l'évenement (en minute)</label>
+        <input type="text" name="duree_minutes" id="duree_minutes">
     </div>
 
     <div>
-        <label for="idConferencier">id du conferencier</label>
-        <select name="idConferencier" id="idConferencier">
-            @foreach($conferencier as $conferenciers)
-                <option value="{{$conferencier->idConferencier}}">{{$conferencier->nomConferencier}} {{$conferencier->prenomConferencier}}</option>
-            @endforeach
+        <label for="id_conferencier">Sélectionner un conférencier</label>
+        <select name="id_conferencier" id="id_conferencier" required>
+        <option value="">-- Choisir un conférencier --</option>
+        @foreach($conferencier as $conferencier)
+        <option value="{{ $conferencier->id_conferencier }}">{{ $conferencier->nom }} {{ $conferencier->prenom }}</option>
+        @endforeach
         </select>
     </div>
 
     <div>
-        <label for="idSalle">id de la salle</label>
-        <select name="idSalle" id="idSalle">
-            @foreach($salle as $salles)
-                <option value="{{$salle->idsalle}}">{{$salle->nomSalle}}</option>
-            @endforeach
+        <label for="id_salle">Sélectionner une salle</label>
+        <select name="id_salle" id="id_salle" required>
+        <option value="">-- Choisir une salle --</option>
+        @foreach($salle as $salle)
+        <option value="{{ $salle->id_salle }}">{{ $salle->nom }} </option>
+        @endforeach
         </select>
     </div>
-
 
     <div>
         <input type="submit" value="Créer l'atelier">
@@ -52,6 +53,4 @@
 </form>
 
 
-
-
-                @endsection
+@endsection
