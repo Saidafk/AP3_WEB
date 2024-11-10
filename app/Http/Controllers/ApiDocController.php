@@ -162,9 +162,61 @@ class ApiDocController extends Controller
 
 
 
-    function pageModif(){
+    function pageSelectionAtelier(Request $request){
+
+        $salle = Salle::all();
+        $conferencier = Conferencier::all();
+        $atelier = Atelier::all();
+
+        return view('doc.selectionnerAtelier', ['conferencier' => $conferencier, 'salle' => $salle, 'atelier' => $atelier]);
+    }
+
+    public function traiterSelectionAtelier(Request $request){
+
+        $idatelier = $request->input('id_atelier');
+
+        $atelier = Atelier::find($idatelier);
+
+        $conferencier = Conferencier::all(); 
+        $salle = Salle::all();
+        $acs = AtelierConferencierSalle::all();
 
         
+
+        return view('doc.modifierAtelier', ['atelier' => $atelier, 'conferencier' => $conferencier, 'salle' => $salle]);
     }
+
+    public function mettreAJourAtelier(Request $request)
+{
+    $idatelier = $request->input('id_atelier');
+
+    $atelier = Atelier::find($idatelier);
+
+    
+
+    $request->validate([
+        'titre' => 'required|string|max:255',
+        'description' => 'required|string',
+        'duree_minutes' => 'required|integer',
+    ]);
+
+    
+    //DD($atelier);
+
+
+    $atelier->titre = $request->input('titre');
+    $atelier->description = $request->input('description');
+    $atelier->duree_minutes = $request->input('duree_minutes');
+    $atelier->save();
+
+    
+
+    //dd($atelier);
+
+
+    return redirect()->route('pageSelectionAtelier')->with('success', 'Atelier mis à jour avec succès.');
+}
+
+
     
 }

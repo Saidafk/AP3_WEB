@@ -476,18 +476,21 @@ public function confirmationDesinscription(Request $request)
 
         $equipe = SessionHelpers::getConnected();
 
+        
+
         $request->validate([
-            'nomequipe' => 'required|string|max:255|unique:EQUIPE,nomequipe',
-            'lienprototype' => 'required|string|max:255|unique:EQUIPE,lienprototype',
+            'nomequipe' => 'required|string|max:255|unique:EQUIPE,nomequipe', 
+            'lienprototype' => 'required|string|max:255',
             'login' => 'required|string|max:255|email',
 
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
         
-        $equipe->nomequipe = $request->nomequipe;
-        $equipe->lienprototype = $request->lienprototype;
-        $equipe->login = $request->login;
+      
+        $equipe->nomequipe = $request->input('nomequipe');
+        $equipe->lienprototype = $request->input('lienprototype');
+        $equipe->login = $request->input('login');
         
                 
         if ($request->filled('password')) {

@@ -13,7 +13,7 @@ Vous etes etes sur la page qui vous informe des atelier et activité du prochain
 
 <a class="btn btn-primary mx-3" href="/doc-api/administrateur/creation-atelier">Creer un ateliers</a> 
 
-<a class="btn btn-primary mx-3" href="/doc-api/administrateur/modifier-atelier">Modifier les ateliers</a> 
+<a class="btn btn-primary mx-3" href="/doc-api/administrateur/selection-atelier">Modifier les ateliers</a> 
 
 faire formulaire creation d'un atelier assigner une salle et des conferencier 
 

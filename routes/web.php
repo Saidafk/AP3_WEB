@@ -48,11 +48,18 @@ Route::get('/doc-api', [ApiDocController::class, 'liste'])->name('doc-api');
 
 Route::get('/doc-api/administrateur/creation-atelier', [ApiDocController::class, 'pageCreation'])->name('pageCreation');
 
-
-
 Route::post('/doc-api/administrateur/creation-atelier', [ApiDocController::class, 'creeAtelier'])->name('creeAtelier');
 
-Route::get('/doc-api/administrateur/modifier-atelier', [ApiDocController::class, 'pageModif'])->name('pageModif');
+Route::get('/doc-api/administrateur/selection-atelier', [ApiDocController::class, 'pageSelectionAtelier'])->name('pageSelectionAtelier');
+
+Route::post('/doc-api/administrateur/selection-atelier', [ApiDocController::class, 'traiterSelectionAtelier'])->name('traiterSelectionAtelier');
+
+//Route::post('/doc-api/administrateur/selection-atelier', [ApiDocController::class, 'pageSelectionAtelier'])->name('pageSelectionAtelier');
+
+Route::post('/doc-api/administrateur/mettre-a-jour-atelier', [ApiDocController::class, 'mettreAJourAtelier'])->name('mettreAJourAtelier');
+
+
+
 
 Route::get('/doc-api/administrateur/atelier', [ApiDocController::class, 'gererLesAtelier'])->name('gererLesAtelier');
 
