@@ -192,17 +192,12 @@ class ApiDocController extends Controller
 
     $atelier = Atelier::find($idatelier);
 
-    
 
     $request->validate([
         'titre' => 'required|string|max:255',
         'description' => 'required|string',
         'duree_minutes' => 'required|integer',
     ]);
-
-    
-    //DD($atelier);
-
 
     $atelier->titre = $request->input('titre');
     $atelier->description = $request->input('description');

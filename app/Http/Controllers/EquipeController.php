@@ -479,10 +479,9 @@ public function confirmationDesinscription(Request $request)
         
 
         $request->validate([
-            'nomequipe' => 'required|string|max:255|unique:EQUIPE,nomequipe', 
+            'nomequipe' => 'required|string|max:255',
             'lienprototype' => 'required|string|max:255',
             'login' => 'required|string|max:255|email',
-
             'password' => 'nullable|string|min:6|confirmed',
         ]);
 
@@ -492,6 +491,7 @@ public function confirmationDesinscription(Request $request)
         $equipe->lienprototype = $request->input('lienprototype');
         $equipe->login = $request->input('login');
         
+        
                 
         if ($request->filled('password')) {
             $equipe->password = bcrypt($request->password);
@@ -499,7 +499,7 @@ public function confirmationDesinscription(Request $request)
 
         $equipe->save();
 
-        return view('equipe.modifierProfile')->with('success', 'Profile mis à jour.');
+        return view('equipe.modifierProfile',['equipe' => $equipe])->with('success', 'Profile mis à jour.');
     }
 
 

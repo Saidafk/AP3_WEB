@@ -54,8 +54,6 @@ Route::get('/doc-api/administrateur/selection-atelier', [ApiDocController::class
 
 Route::post('/doc-api/administrateur/selection-atelier', [ApiDocController::class, 'traiterSelectionAtelier'])->name('traiterSelectionAtelier');
 
-//Route::post('/doc-api/administrateur/selection-atelier', [ApiDocController::class, 'pageSelectionAtelier'])->name('pageSelectionAtelier');
-
 Route::post('/doc-api/administrateur/mettre-a-jour-atelier', [ApiDocController::class, 'mettreAJourAtelier'])->name('mettreAJourAtelier');
 
 
