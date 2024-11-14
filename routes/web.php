@@ -13,6 +13,8 @@ use App\Http\Middleware\IsEquipeConnected;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HackathonController;
 use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\AdminController;
+
 
 include('inc/api.php');
 
@@ -35,7 +37,19 @@ Route::any('/create-team', [EquipeController::class, 'create'])->name('create-te
 
 Route::middleware(IsAdminConnected::class)->group(function () {
 
-    
+    //Route::get('/a2f', [AdminController::class, 'A2F'])->name('A2F');
+
+    Route::get('/doc-api/administrateur', [AdminController::class, 'voirAdmin'])->name('voirAdmin');
+
+    Route::get('/doc-api/administrateur/a2f/qr-code', [AdminController::class, 'activerA2F'])->name('activerA2F');
+
+Route::get('/doc-api/administrateur/a2f/activer', [AdminController::class, 'activerA2F'])->name('activerA2F');
+
+Route::get('/doc-api/administrateur/a2f/desactiver', [AdminController::class, 'desactiverA2F'])->name('desactiverA2F');
+
+    //Route::get('/a2f/verification', [AdminController::class, 'showVerificationForm'])->name('verificationA2F');
+    //Route::post('/a2f/verification', [AdminController::class, 'verifyA2F'])->name('verifyA2F');
+
 
     Route::get('/logoutAdmin', [EquipeController::class, 'logoutAdmin'])->name('logoutAdmin');
 
@@ -61,8 +75,8 @@ Route::post('/doc-api/administrateur/mettre-a-jour-atelier', [ApiDocController::
 
 Route::get('/doc-api/administrateur/atelier', [ApiDocController::class, 'gererLesAtelier'])->name('gererLesAtelier');
 
-Route::get('/doc-api/administrateur', [ApiDocController::class, 'voirAdmin'])->name('voirAdmin');
-Route::get('/doc-api/administrateur/info', [ApiDocController::class, 'activerA2F'])->name('activerA2F');
+
+//Route::get('/doc-api/administrateur/info', [ApiDocController::class, 'activerA2F'])->name('activerA2F');
 
 Route::get('/doc-api/hackathons', [ApiDocController::class, 'listeHackathons'])->name('doc-api-hackathons');
 Route::get('/doc-api/membres', [ApiDocController::class, 'listeMembres'])->name('doc-api-membres');

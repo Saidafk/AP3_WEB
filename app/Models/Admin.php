@@ -9,11 +9,12 @@ class Admin extends Model
 {
     use HasFactory;
 
+
     protected $table = 'ADMINISTRATEUR';
     protected $primaryKey = 'idadministrateur';
     public $timestamps = false;
 
-    protected $fillable = ['nom', 'prenom', 'motpasse', 'email', 'cleA2F'];
+    protected $fillable = ['nom', 'prenom', 'motpasse', 'email', 'cleA2F', 'active_a2f'];
 
     /**
      * Retourne les équipes inscrites à un hackathon.
