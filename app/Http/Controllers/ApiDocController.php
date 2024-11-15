@@ -133,7 +133,7 @@ class ApiDocController extends Controller
         $Atelier = Atelier::all();
 
         //dd($conferencier->id_conferencier);
-
+        //
         // Création d'un atelier
         $atelier = new Atelier();
         
@@ -146,13 +146,19 @@ class ApiDocController extends Controller
         $idconferencier = $request->input('id_conferencier');  
         $idsalle = $request->input('id_salle');  
 
-        AtelierConferencierSalle::create([
-            'id_atelier' => $atelier->id_atelier, 
-            'id_conferencier' => $idconferencier,   
-            'id_salle' => $idsalle,                 
-        ]);
+        $atelierData = [];
 
+        foreach ($idconferencier as $idconferencier) {
+        $atelierData[] = [
+        'id_atelier' => $atelier->id_atelier,
+        'id_conferencier' => $idconferencier,
+        'id_salle' => $idsalle,
+        ];
+        }
 
+        AtelierConferencierSalle::insert($atelierData);
+
+        
         return redirect()->route('pageCreation')
             ->with('success', 'Événement créé avec succès!');
     }

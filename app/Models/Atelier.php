@@ -22,7 +22,7 @@ class Atelier extends Model
 
     public function conferenciers()
     {
-        return $this->belongsToMany(Conferencier::class, 'atelier_conferencier', 'id_atelier', 'id_conferencier');
+        return $this->belongsToMany(Conferencier::class, 'atelier_conferencier', 'id_atelier', 'id_conferencier', 'idHackathon');
     }
 
 }

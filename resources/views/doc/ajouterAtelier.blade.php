@@ -28,8 +28,9 @@
     </div>
 
     <div>
+
         <label for="id_conferencier">Sélectionner un conférencier</label>
-        <select name="id_conferencier" id="id_conferencier" required>
+        <select multiple name="id_conferencier[]"  id="id_conferencier" required>
         <option value="">-- Choisir un conférencier --</option>
         @foreach($conferencier as $conferencier)
         <option value="{{ $conferencier->id_conferencier }}">{{ $conferencier->nom }} {{ $conferencier->prenom }}</option>

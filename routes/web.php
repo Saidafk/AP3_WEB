@@ -3,16 +3,12 @@
 use App\Models\Equipe;
 use App\Utils\SessionHelpers;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\Administrateur;
 use App\Http\Controllers\MainController;
 use App\Http\Middleware\IsAdminConnected;
 use App\Http\Controllers\ApiDocController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Middleware\IsEquipeConnected;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HackathonController;
-use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\AdminController;
 
 
@@ -70,11 +66,7 @@ Route::post('/doc-api/administrateur/selection-atelier', [ApiDocController::clas
 
 Route::post('/doc-api/administrateur/mettre-a-jour-atelier', [ApiDocController::class, 'mettreAJourAtelier'])->name('mettreAJourAtelier');
 
-
-
-
 Route::get('/doc-api/administrateur/atelier', [ApiDocController::class, 'gererLesAtelier'])->name('gererLesAtelier');
-
 
 //Route::get('/doc-api/administrateur/info', [ApiDocController::class, 'activerA2F'])->name('activerA2F');
 
@@ -86,7 +78,10 @@ Route::get('/doc-api/equipes', [ApiDocController::class, 'listeEquipes'])->name(
 // Proctection par le middleware IsEquipeConnected (voir app/Http/Middleware/IsEquipeConnected.php)
 Route::middleware(isEquipeConnected::class)->group(function () {
 
-    
+    Route::get('/planning-hackathon/info/{id}', [EquipeController::class, 'infoAtelier'])->name('infoAtelier');
+
+    Route::get('/planning-hackathon', [EquipeController::class, 'pagePlanning'])->name('pagePlanning');
+
     Route::get('/logout', [EquipeController::class, 'logout'])->name('logout');
 
     Route::get('/quitterHackathon', [EquipeController::class, 'quitterHackathon'])->name('quitterHackathon');

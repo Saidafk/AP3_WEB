@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Equipe;
-use App\Models\Hackathon;
-use App\Models\Inscrire;
 use App\Models\Membre;
+use App\Models\Atelier;
+use App\Models\Inscrire;
+use App\Models\Hackathon;
 use App\Utils\EmailHelpers;
-use App\Utils\SessionHelpers;
+use App\Models\Conferencier;
 use Illuminate\Http\Request;
+use App\Utils\SessionHelpers;
+use Illuminate\Support\Carbon;
+use App\Models\AtelierConferencierSalle;
 
 class EquipeController extends Controller
 {
@@ -426,8 +430,6 @@ public function confirmationDesinscription(Request $request)
         }
     
         $equipe = Equipe::find($id);
-    
-        
 
         $membres = $equipe->membres;
         $nomEquipe = $equipe -> nomequipe;
@@ -544,6 +546,59 @@ public function confirmationDesinscription(Request $request)
         );
 
         return redirect("/me")->with(['succes', 'Données télechargées.']);
+    }
+
+    function pagePlanning(){
+
+        if (!SessionHelpers::isConnected()) {
+            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
+        }
+
+        $hackathon = Hackathon::getActiveHackathon();
+        
+        $ateliers = Atelier::all();
+
+        foreach($ateliers as $atelier){
+            $atelier->desc = $atelier->description;
+            
+        }
+
+        return view('equipe.planning-hackathon',['hackathon' => $hackathon, 'ateliers' => $ateliers]);
+    }
+
+    function infoAtelier($id){
+
+        $atelier = Atelier::find($id);
+
+            $titre = $atelier->titre;
+            $description = $atelier->description;
+            
+            $debut = $atelier ->dateheuredebuta;
+            $fin = $atelier ->dateheurefina;
+
+            $debuta= Carbon::parse($debut)->addMonths(12);
+            $fina = Carbon::parse($fin)->addMonths(12);
+            
+            $duree_minutes = $debuta->diffInMinutes($fina); 
+            
+            $duree_minutes_arrondie = round($duree_minutes);
+
+            $ATS = AtelierConferencierSalle::where('id_atelier', $id)->get();
+            
+            if(count($ATS) > 0){
+                foreach($ATS as $current){  
+                    $ATS->confName = $current->conferencier->nom;
+                    $ATS->confFirstName = $current->conferencier->prenom;
+                    $ATS->salleName = $current->salle->nom;                   
+                }
+                return view('equipe.detail-atelier',['atelier' => $atelier, 'titre' => $titre, 'description' => $description, 
+                'debuta' => $debuta, 'fina' => $fina, 'duree_minutes_arrondie' => $duree_minutes_arrondie, 'ATS' => $ATS]);
+            }
+            else
+            
+            return redirect("/planning-hackathon")->withErrors(['errors' => "Vide"]);
+            
+        
     }
 
 }
