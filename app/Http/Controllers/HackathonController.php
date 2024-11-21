@@ -181,7 +181,7 @@ public function commentaireHackathon($idhackathon)
     $hackathon = Hackathon::find($idhackathon);
 
     // Récupérer l'équipe actuellement connectée
-    $equipe = SessionHelpers::getConnected();
+    $administrateur = SessionHelpers::AdmingetConnected();
 
     // Vérifier si l'équipe a participé à ce hackathon (inscrite et non désinscrite)
     $participation = $equipe->inscrire()->where('idhackathon', $idhackathon)->whereNull('datedesinscription')->first();

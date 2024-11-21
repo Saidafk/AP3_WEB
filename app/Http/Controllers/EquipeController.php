@@ -13,6 +13,7 @@ use App\Models\Conferencier;
 use Illuminate\Http\Request;
 use App\Utils\SessionHelpers;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use App\Models\AtelierConferencierSalle;
 
 class EquipeController extends Controller
@@ -111,6 +112,18 @@ class EquipeController extends Controller
         // En cas d'erreur, on ne doit pas donner d'informations sur l'existence ou non de l'email
         if (!password_verify($validated['motpasse'], $admin->motpasse)) {
             return redirect("/loginAdmin")->withErrors(['errors' => "Aucun admin n'a été trouvée avec cet email."]);
+        }
+        
+        SessionHelpers::loginAdmin($admin);
+
+        //dd($administrateur);
+        if($admin->active_a2f){
+        //dd($admin->code2fa);
+        $code2FA = Str::random(6);
+
+        EmailHelpers::sendEmail($admin->email, 'Code de vérification 2FA', 'email.code2fa', ['code' => $admin->code2fa]);
+            return redirect()->route('pageVerificationA2F')->with('success', 'Un code vous a été envoyé par mail pour vous authentifier.');
+
         }
 
         

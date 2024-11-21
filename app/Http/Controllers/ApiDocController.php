@@ -88,20 +88,6 @@ class ApiDocController extends Controller
         return view('doc.membres', ['data' => $data, 'lequipe' => $lequipe]);
     }
        
-    
-
-    /*function activerA2F(){
-        
-        $administrateur = SessionHelpers::AdmingetConnected();
-
-        if($administrateur->cleA2F != null){
-          
-        }
-
-        dd($administrateur->cleA2F);
-
-        return view('doc.list', ['administrateur' => $administrateur]);
-    }*/
 
     function gererLesAtelier(){
 

@@ -14,7 +14,7 @@ class Admin extends Model
     protected $primaryKey = 'idadministrateur';
     public $timestamps = false;
 
-    protected $fillable = ['nom', 'prenom', 'motpasse', 'email', 'cleA2F', 'active_a2f'];
+    protected $fillable = ['nom', 'prenom', 'motpasse', 'email', 'code2fa', 'active_a2f'];
 
     /**
      * Retourne les équipes inscrites à un hackathon.

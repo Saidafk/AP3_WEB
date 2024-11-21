@@ -8,6 +8,7 @@ use App\Http\Middleware\IsAdminConnected;
 use App\Http\Controllers\ApiDocController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Middleware\IsEquipeConnected;
+use App\Http\Middleware\Check2FA;
 use App\Http\Controllers\HackathonController;
 use App\Http\Controllers\AdminController;
 
@@ -30,18 +31,23 @@ Route::post('/loginAdmin', [EquipeController::class, 'connectAdmin'])->name('con
 Route::get('/join', [HackathonController::class, 'join'])->name('join');
 Route::any('/create-team', [EquipeController::class, 'create'])->name('create-team'); // Any pour gérer les GET et POST
 
-
 Route::middleware(IsAdminConnected::class)->group(function () {
 
-    //Route::get('/a2f', [AdminController::class, 'A2F'])->name('A2F');
-
     Route::get('/doc-api/administrateur', [AdminController::class, 'voirAdmin'])->name('voirAdmin');
+    Route::get('/doc-api/administrateur/a2f/activer', [AdminController::class, 'activerA2F'])->name('activerA2F');
+    Route::get('/doc-api/administrateur/a2f/desactiver', [AdminController::class, 'desactiverA2F'])->name('desactiverA2F');
 
-    Route::get('/doc-api/administrateur/a2f/qr-code', [AdminController::class, 'activerA2F'])->name('activerA2F');
+Route::get('/admin/renvoyer-code-2fa', [AdminController::class, 'renvoyerCode2FA'])->name('renvoyerCode2FA');
 
-Route::get('/doc-api/administrateur/a2f/activer', [AdminController::class, 'activerA2F'])->name('activerA2F');
+Route::get('/doc-api/administrateur', [AdminController::class, 'voirAdmin'])->name('voirAdmin');
 
-Route::get('/doc-api/administrateur/a2f/desactiver', [AdminController::class, 'desactiverA2F'])->name('desactiverA2F');
+Route::get('/admin/a2f/activer', [AdminController::class, 'activerA2F'])->name('activerA2F');
+
+Route::get('/admin/a2f/verifier', [AdminController::class, 'pageVerificationA2F'])->name('pageVerificationA2F');
+
+Route::post('/admin/a2f/verifier', [AdminController::class, 'verifierA2F'])->name('verifierA2F');
+
+
 
     //Route::get('/a2f/verification', [AdminController::class, 'showVerificationForm'])->name('verificationA2F');
     //Route::post('/a2f/verification', [AdminController::class, 'verifyA2F'])->name('verifyA2F');
