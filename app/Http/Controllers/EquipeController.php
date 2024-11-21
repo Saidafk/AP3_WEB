@@ -551,28 +551,31 @@ public function confirmationDesinscription(Request $request)
         return redirect("/me")->with(['success' => 'Données télechargées.']);
     }
 
-    function pagePlanning(){
-
+    public function pagePlanning()
+    {
+        // Vérification de la connexion
         if (!SessionHelpers::isConnected()) {
             return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
         }
-
-        $equipe = SessionHelpers::getConnected();
-
-        dd($equipe);
-
-        $hackathon = Hackathon::getActiveHackathon();
-        
-        $ateliers = Atelier::all();
-
-        foreach($ateliers as $atelier){
-            $atelier->desc = $atelier->description;
-            
+    
+        $equipe = SessionHelpers::getConnected(); // Récupérer l'équipe connectée
+        $hackathon = Hackathon::getActiveHackathon(); // Récupérer le hackathon actif
+    
+        // Vérification s'il y a des ateliers associés au hackathon
+        if ($hackathon && $hackathon->ateliers()->count() > 0) {
+            // Récupérer les ateliers du hackathon actif
+            $ateliers = $hackathon->ateliers;
+        } else {
+            $ateliers = []; // Aucun atelier trouvé
         }
-
-        return view('equipe.planning-hackathon',['hackathon' => $hackathon, 'ateliers' => $ateliers, 'equipe' => $equipe]);
+    
+        return view('equipe.planning-hackathon', [
+            'hackathon' => $hackathon,
+            'ateliers' => $ateliers, // Passer les ateliers à la vue
+            'equipe' => $equipe
+        ]);
     }
-
+    
     function infoAtelier($id){
 
         $atelier = Atelier::find($id);
