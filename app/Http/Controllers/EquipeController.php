@@ -544,6 +544,10 @@ public function confirmationDesinscription(Request $request)
             return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
         }
 
+        $equipe = SessionHelpers::getConnected();
+
+        dd($equipe);
+
         $hackathon = Hackathon::getActiveHackathon();
         
         $ateliers = Atelier::all();
@@ -553,7 +557,7 @@ public function confirmationDesinscription(Request $request)
             
         }
 
-        return view('equipe.planning-hackathon',['hackathon' => $hackathon, 'ateliers' => $ateliers]);
+        return view('equipe.planning-hackathon',['hackathon' => $hackathon, 'ateliers' => $ateliers, 'equipe' => $equipe]);
     }
 
     function infoAtelier($id){
