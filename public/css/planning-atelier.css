@@ -1,0 +1,33 @@
+/* Ajout d'un conteneur spécifique pour diviser la vue */
+.container-agenda {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 1200px; /* Ajustez selon la largeur souhaitée */
+    margin: 0 auto;
+}
+
+/* Diviser l'agenda en deux parties égales */
+.calendar-left, .calendar-right {
+    width: 48%;  /* Chaque partie occupe 48% de la largeur */
+    background-color: #f7f7f7; /* Optionnel: change la couleur de fond */
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.calendar-left {
+    margin-right: 4%; /* Ajoute un petit espace entre les deux colonnes */
+}
+
+/* Style supplémentaire pour l'affichage */
+.fullcalendar {
+    width: 100% !important; /* Assurez-vous que le calendrier occupe toute la largeur disponible */
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 40px;
+    padding-bottom: 20px;
+}

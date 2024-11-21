@@ -552,29 +552,48 @@ public function confirmationDesinscription(Request $request)
     }
 
     public function pagePlanning()
-    {
-        // Vérification de la connexion
-        if (!SessionHelpers::isConnected()) {
-            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
-        }
-    
-        $equipe = SessionHelpers::getConnected(); // Récupérer l'équipe connectée
-        $hackathon = Hackathon::getActiveHackathon(); // Récupérer le hackathon actif
-    
-        // Vérification s'il y a des ateliers associés au hackathon
-        if ($hackathon && $hackathon->ateliers()->count() > 0) {
-            // Récupérer les ateliers du hackathon actif
-            $ateliers = $hackathon->ateliers;
-        } else {
-            $ateliers = []; // Aucun atelier trouvé
-        }
-    
-        return view('equipe.planning-hackathon', [
-            'hackathon' => $hackathon,
-            'ateliers' => $ateliers, // Passer les ateliers à la vue
-            'equipe' => $equipe
-        ]);
+{
+    // Vérification de la connexion
+    if (!SessionHelpers::isConnected()) {
+        return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
     }
+
+    $equipe = SessionHelpers::getConnected(); // Récupérer l'équipe connectée
+    $hackathon = Hackathon::getActiveHackathon(); // Récupérer le hackathon actif
+
+    // Vérification s'il y a des ateliers associés au hackathon
+    if ($hackathon && $hackathon->ateliers()->count() > 0) {
+        // Récupérer les ateliers du hackathon actif
+        $ateliers = $hackathon->ateliers;
+    } else {
+        $ateliers = []; // Aucun atelier trouvé
+    }
+
+    // Préparer les événements pour FullCalendar
+    $events = [];
+    foreach ($ateliers as $atelier) {
+        // Convertir les dates en objets Carbon si elles sont sous forme de string
+        $startDate = Carbon::parse($atelier->dateheuredebuta); // Date de début
+        $endDate = Carbon::parse($atelier->dateheurefina); // Date de fin
+
+        // Formater les dates pour FullCalendar (YYYY-MM-DD HH:mm:ss)
+        $events[] = [
+            'title' => $atelier->titre,
+            'start' => $startDate->format('Y-m-d H:i:s'),  // Date de début
+            'end' => $endDate->format('Y-m-d H:i:s'),  // Date de fin
+            'description' => $atelier->description,
+            'url' => route('infoAtelier', ['id' => $atelier->id_atelier]), // Lien vers la page de détails de l'atelier
+        ];
+    }
+
+    return view('equipe.planning-hackathon', [
+        'hackathon' => $hackathon,
+        'ateliers' => $ateliers, // Passer les ateliers à la vue
+        'equipe' => $equipe,
+        'events' => json_encode($events)  // Passer les événements au calendrier
+    ]);
+}
+
     
     function infoAtelier($id){
 
