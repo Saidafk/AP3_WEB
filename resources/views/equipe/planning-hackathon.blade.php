@@ -32,9 +32,22 @@
     <script>
         $(document).ready(function() {
             $('#calendar').fullCalendar({
+
+                events: [
+                @foreach ($ateliers as $atelier)
+                    {
+                        title: "{{ addslashes($atelier->titre) }}",  // Échappement des caractères spéciaux dans le titre
+                        start: "{{ $atelier->date_debut }}",         // Assurez-vous que les dates sont au bon format (YYYY-MM-DDTHH:mm:ss)
+                        end: "{{ $atelier->date_fin }}",             // Assurez-vous que les dates sont au bon format
+                        description: "{{ addslashes($atelier->description) }}",  // Optionnel, si vous voulez ajouter des détails supplémentaires
+                        url: "{{ route('infoAtelier', ['id' => $atelier->id_atelier]) }}", // Lien vers la page des détails de l'atelier
+                    },
+                @endforeach
+            ],
+
                 events: {!! $events !!}, // Passer les événements à FullCalendar
                 eventClick: function(event) {
-                    if (event.url) {
+                    if (events.url) {
                         window.location.href // Redirige vers la page des détails de l'atelier
                         return false;  // Empêche l'action par défaut
                     }
