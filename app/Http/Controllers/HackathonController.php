@@ -19,6 +19,8 @@ use Termwind\Components\Hr;
         return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
     }
 
+
+
     $equipe = SessionHelpers::getConnected();
     $idh = $request->get('idh');
 
@@ -39,11 +41,14 @@ use Termwind\Components\Hr;
     $dateInscription = $inscription?->dateinscription; 
     $dateDesInscription = $inscription?->datedesinscription; 
 
-
-    
- 
-    
     try {
+
+        if($dateInscription != null && $dateDesInscription == null ){
+
+            return redirect("/")->withErrors(['errors' => "Vous êtes déjà inscrit."]);
+        }
+
+
         if ($dateInscription == null) {
 
             $inscription = new Inscrire();
@@ -54,7 +59,7 @@ use Termwind\Components\Hr;
             
             $inscription->save();
 
-            return redirect("/")->withErrors(['success' => "Bienvenue."]);
+            return redirect("/")->with(['success' => "Bienvenue."]);
         }
 
         if ($dateDesInscription !== null) {
@@ -68,7 +73,7 @@ use Termwind\Components\Hr;
             ]);
             
 
-        return redirect("/")->withErrors(['success' => "Votre inscription a été mise à jour."]);
+        return redirect("/")->with(['success' => "Votre inscription a été mise à jour."]);
     }
 } catch (\Exception $e) {
     return redirect("/")->withErrors(['errors' => "Une erreur s'est produite : " . $e->getMessage()]);

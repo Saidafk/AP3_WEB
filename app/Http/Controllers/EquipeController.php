@@ -128,17 +128,12 @@ class EquipeController extends Controller
      */
     public function create(Request $request)
     {
-        // Si l'équipe est déjà connectée, on la redirige vers sa page de profil
+        
         if (SessionHelpers::isConnected()) {
             return redirect("/me");
         }
 
-        /*if($inscrire->dateinscription = null){
-
-            return redirect("/create-team")->withErrors(['errors' => "Aucun hackathon n'est actif pour le moment. Veuillez réessayer plus tard."]);
-        }*/
-
-        // Si le formulaire n'a pas été soumis, on affiche le formulaire de création d'équipe
+        
         if (!$request->isMethod('post')) {
             return view('equipe.create', []);
         }
@@ -170,6 +165,8 @@ class EquipeController extends Controller
 
         // Récupération du hackathon actif
         $hackathon = Hackathon::getActiveHackathon();
+
+        
 
         // Si aucun hackathon n'est actif, on redirige vers la page de création d'équipe avec un message d'erreur
         if (!$hackathon) {
@@ -218,13 +215,14 @@ class EquipeController extends Controller
     public function logout()
     {
         SessionHelpers::logout();
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Vous vous êtes déconnecté avec succès.');
+        
     }
 
     public function logoutAdmin()
     {
         SessionHelpers::logoutAdmin();
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Vous vous êtes déconnecté en tant qu\'administrateur.');
     }
 
     public function quitterHackathon()
@@ -275,6 +273,8 @@ class EquipeController extends Controller
         // Ajout d'un membre à l'équipe
         $equipe = SessionHelpers::getConnected();
 
+        $hackathon = Hackathon::getActiveHackathon();
+
         // Validation des données, pour l'instant nous n'avons que NOM et PRENOM.
         // TODO : À l'avenir ajouter l'ensemble des champs nécessaires prévus dans la base de données.
 
@@ -323,15 +323,15 @@ class EquipeController extends Controller
             $membre->datenaissance = $request->input('datenaissance');
             $membre->idequipe = $equipe->idequipe;
 
-            //$nomhackathon = $equipe->hackathon->thematique;
+            
             
             $membre->save();
-            EmailHelpers::sendEmail($equipe->login, "Inscription de votre équipe", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $equipe]);
+            EmailHelpers::sendEmail($membre->email, "Inscription de votre équipe", "email.ajoutMembre", ['membre' => $membre, 'equipe' => $equipe, 'hackathon' => $hackathon]);
             
             // TODO : envoyer un email de confirmation au membre en s'inspirant de la méthode create de EquipeController (emailHelpers::sendEmail)
 
             // Redirection vers la page de l'équipe
-            return redirect("/me")->with('success', "Le membre a bien été ajouté à votre équipe. Vérifiez votre boîte mail pour confirmer l'ajout de votre membre");
+            return redirect("/me")->with('success', "Le membre a bien été ajouté à votre équipe. Un email lui a été envoyé pour l'informer de son inscription.");
             
         } catch (\Exception $e) {
             // Redirection vers la page de l'équipe avec un message d'erreur
@@ -377,7 +377,7 @@ class EquipeController extends Controller
 public function confirmationDesinscription(Request $request)
 {
     if (!SessionHelpers::isConnected()) {
-        return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
+        return response()->json(['errors' => 'Vous devez être connecté pour effectuer cette action.'], 403);
     }
 
     $equipe = SessionHelpers::getConnected();
@@ -387,13 +387,13 @@ public function confirmationDesinscription(Request $request)
         
             Inscrire::where('idequipe', $equipe->idequipe)
             ->where('idhackathon', $hackathon->idhackathon)
-            ->update(['datedesinscription' => now()]);
+            ->update(['datedesinscription' => now()]);      
 
-            
-
-        return redirect("/me")->with(['succes', 'Vous avez quitté le hackathon avec succès.']);
+        return redirect("/")->with(['success' => 'Vous avez quitté le hackathon avec succès.']);
+        
     }
 
+    
     return redirect()->back()->withErrors(['errors' => "Erreur lors de la désinscription."]);
 }
 
@@ -407,20 +407,6 @@ public function confirmationDesinscription(Request $request)
 
         return redirect()->route('me')->with('success', 'Membre supprimé avec succès.');
     }
-
-
-    /*public function confirmationDesinscription (Equipe $equipe){
-
-        if (!SessionHelpers::isConnected()) {
-            return response()->json(['error' => 'Vous devez être connecté pour effectuer cette action.'], 403);
-        }
-
-
-        return redirect()->route('me')->with('success', 'Vous venez de quitter le hackathon');
-    }*/
-
-    
-
 
 
     public function afficherMembres($id)
@@ -437,27 +423,7 @@ public function confirmationDesinscription(Request $request)
         return view("equipe.afficherMembres", ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
     }
 
-    /*public function modifierProfile(Request $request)
-    {
-    
-        if (!SessionHelpers::isConnected()) {
-            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
-        }
-        
-        $equipe = SessionHelpers::getConnected();
-
-       
-
-        
-            $membres = $equipe->membres;
-        $nomEquipe = $equipe -> nomequipe;
-
-        return view('equipe.modifierProfile', ['equipes' => $membres, 'nomEquipe' => $nomEquipe]);
-        }
-*/
-        
-      
-    
+           
 
     public function modifierProfile()
     {
@@ -471,38 +437,46 @@ public function confirmationDesinscription(Request $request)
     }
 
     public function miseAjourProfile(Request $request)
-    {
-        if (!SessionHelpers::isConnected()) {
-            return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
-        }
-
-        $equipe = SessionHelpers::getConnected();
-
-        
-
-        $request->validate([
-            'nomequipe' => 'required|string|max:255',
-            'lienprototype' => 'required|string|max:255',
-            'login' => 'required|string|max:255|email',
-            'password' => 'nullable|string|min:6|confirmed',
-        ]);
-
-        
-      
-        $equipe->nomequipe = $request->input('nomequipe');
-        $equipe->lienprototype = $request->input('lienprototype');
-        $equipe->login = $request->input('login');
-        
-        
-                
-        if ($request->filled('password')) {
-            $equipe->password = bcrypt($request->password);
-        }
-
-        $equipe->save();
-
-        return view('equipe.modifierProfile',['equipe' => $equipe])->with('success', 'Profile mis à jour.');
+{
+    if (!SessionHelpers::isConnected()) {
+        return redirect("/login")->withErrors(['errors' => "Vous devez être connecté pour accéder à cette page."]);
     }
+
+    $equipe = SessionHelpers::getConnected();
+
+    // Validation de la requête
+    $request->validate([
+        'nomequipe' => 'required|string|max:255|unique:EQUIPE,nomequipe|regex:/^[a-zA-Z0-9\s]*$/',
+        'lienprototype' => 'required|string|max:255|unique:EQUIPE,lienprototype',
+        'login' => 'required|string|max:255|email|unique:EQUIPE,login',
+        'password' => 'nullable|string|min:8|confirmed', // Validation pour le mot de passe
+    ], [
+        // Personnalisation des messages d'erreur
+        'password.min' => 'Le mot de passe doit faire au moins 8 caractères.',
+        'nomequipe.unique' => 'Le nom de cette équipe existe déja.',
+        'lienprototype.unique' => 'Le lien prototype existe déja.',
+        'login.unique' => 'Cette email est déja utilisé.',
+    ]);
+
+    // Mise à jour des informations de l'équipe
+    $equipe->nomequipe = $request->input('nomequipe');
+    $equipe->lienprototype = $request->input('lienprototype');
+    $equipe->login = $request->input('login');
+
+    // Vérification et mise à jour du mot de passe
+    if ($request->filled('password')) {
+        // Si un mot de passe est fourni, on vérifie s'il fait bien 6 caractères minimum
+        $equipe->password = bcrypt($request->password);
+    }
+
+    // Sauvegarde des informations
+    $equipe->save();
+
+    // Retourner la vue avec un message de succès
+    return view('equipe.modifierProfile', ['equipe' => $equipe])->with('success', 'Profile mis à jour.');
+}
+
+
 
 
     public function telechargerLesDonnees()

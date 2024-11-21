@@ -24,7 +24,27 @@
                     <div><em>Organisateur :</em> <?= "{$organisateur->nom} {$organisateur->prenom}" ?></div>
                 </div>
 
-                <!-- Affichage des messages d'erreurs -->
+                <!-- Statut des inscriptions -->
+                <div class="alert alert-info mt-3">
+                @if ($equipesmaxatteinte && !$rejoindre)
+                    <strong>Inscriptions terminées :</strong> La date limite pour s'inscrire est dépassée et le nombre maximum d'équipes a été atteint pour cet événement.
+                @elseif ($equipesmaxatteinte)
+                    <strong>Inscriptions fermées :</strong> Le nombre maximum d'équipes a été atteint.
+                @elseif (!$rejoindre)
+                    <strong>Inscriptions terminées :</strong> La date limite pour s'inscrire est dépassée.
+                @else
+                    <strong>Inscriptions ouvertes :</strong> Il reste <b>{{ $nbPlaceRestante }}</b> places disponibles !
+                @endif
+                </div>
+
+                 <!-- Affichage des messages de succès -->
+                @if (session('success'))
+                    <div class="alert alert-success mt-3">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <!-- Affichage des messages d'erreur -->
                 @if ($errors->any())
                     <div class="alert alert-danger shadow-none mt-3 mb-0">
                         <ul class="list-unstyled text-start m-0">
@@ -35,35 +55,34 @@
                     </div>
                 @endif
 
-                <div class="d-flex flex-wrap pt-3">
-                <a class="btn bg-green m-2 button-home" href="{{ route('voirLesHackathons') }}"> Voir les Hacktahons </a>
-                <a class="btn bg-green m-2 button-home" href="{{ route('pagePlanning') }}"> Voir le Planning du hackathon actif </a>
-                @if ($rejoindre && !$equipesmaxatteinte)
-                    <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
-                    <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
-                    @elseif (!$rejoindre && $equipesmaxatteinte)
-                    <p><b class="texte-special">Les inscriptions sont closes et le nombre maximum d'équipes est atteint.</b></p>
-                    @elseif (!$rejoindre)
-                    <p><b class="texte-special">La date butoir des inscriptions est passée.</b></p>
-                    @elseif ($equipesmaxatteinte)
-                    <p><b class="texte-special">Le nombre d'équipe max a été atteint.</b></p>
-                @endif
                 
-                
-                
-                    <a class="btn bg-green m-2 button-home" href="#" @click.prevent="getParticipants">
+
+            <!-- Boutons côte à côte avec la même taille -->
+                <div class="d-flex justify-content-between w-100 mt-3">
+                    @if ($rejoindre && !$equipesmaxatteinte)
+                        <a class="btn bg-green m-2 button-home" href="/join?idh={{ $hackathon->idhackathon }}">Rejoindre</a>
+                        <a class="btn bg-green m-2 button-home" href="{{ route('create-team') }}">Créer mon équipe</a>
+                    @else
+                        <button class="btn btn-secondary mx-2 flex-grow-1" disabled>Rejoindre</button>
+                        <button class="btn btn-secondary mx-2 flex-grow-1" disabled>Créer mon équipe</button>
+                    @endif
+
+                    <!-- Autres boutons -->
+                    <a class="btn bg-green m-2 button-home" href="{{ route('voirLesHackathons') }}">Voir les Hackathons</a>
+                    <a class="btn bg-green m-2 button-home" href="{{ route('pagePlanning') }}">Voir le Planning</a>
+                    
+
+                </div>
+                <a class="btn bg-green m-2 button-home" href="#" @click.prevent="getParticipants">
                         <span v-if="!loading">Les participants</span>
                         <span v-else>Chargement en cours…</span>
                     </a>
+                    
                 
-                </div>
-                @if ($nbPlaceRestante > 0 && $rejoindre)
-                <p><b class="texte-special">Il reste {{$nbPlaceRestante}} places</b></p>
-                @endif
-
-            </div>
-            <div v-else>
+                    </div>
             
+            <div v-else>
+
                 <a class="btn bg-green m-2 button-home" href="#" @click.prevent="participantsIsShown = false">←</a> Listes des participants
                 <ul class="pt-3">
                     <li class="member" v-for="p in participants">
@@ -73,9 +92,9 @@
                         <a class="btn btn-sm btn-primary" :href="`/afficherMembres/${p['idequipe']}`"> Membres </a>
                     </template> 
 
-                        
-              
-                    
+
+
+
                     </li>
                 </ul>
 
@@ -88,7 +107,6 @@
     <!-- Pour plus d'informations, me demander ou voir la documentation -->
     <script type="module">
         import {createApp} from 'https://unpkg.com/petite-vue?module'
-
         createApp({
             participants: [],
             participantsIsShown: false,
@@ -99,7 +117,6 @@
                     this.participantsIsShown = true
                 } else {
                     this.loading = true;
-
                     // Sinon on charge via l'API la liste des participants
                     fetch("/api/hackathon/<?= $hackathon->idhackathon ?>/equipe")
                         .then(result => result.json()) // Transforme le retour de l'API en tableau de participants
@@ -109,7 +126,6 @@
                 }
             },
         
-
             
             membres : [],
             membresIsShown: false,
@@ -120,17 +136,14 @@
                     this.membresIsShown = true
                 } else {
                     this.loading = true;
-
                     // Sinon on charge via l'API la liste des participants
                     fetch("/api/membre/<?= $hackathon->idhackathon ?>")
                         .then(result => result.json()) // Transforme le retour de l'API en tableau de participants
                         .then(membres => this.membres = membres) // Sauvegarde la liste.
                         .then(() => this.membresIsShown = true) // Affiche la liste
                         .then(() => this.loading = false) // Arrêt de l'état chargement
-
                 }
             }
         
         }).mount()
     </script>
-@endsection

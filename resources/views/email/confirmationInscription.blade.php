@@ -6,10 +6,11 @@
 
 <h2>Détails de l'événement :</h2>
 <p>Date : {{ $hackathon->dateheuredebuth }} au {{ $hackathon->dateheurefinh }}</p>
-<p>Lieu : {{ $hackathon->ville }}</p>
+<p>Ville : {{ $hackathon->ville }}
+<p>Lieu : {{ $hackathon->lieu }}</p>
+<p>Thématique : {{ $hackathon->thematique }}</p>
+<p>Objectif : {{ $hackathon->objectif }}</p>
 
-<h2>Prochaines étapes :</h2>
-<p>Préparez-vous en conséquence et n'oubliez pas d'apporter le matériel nécessaire.</p>
 
 <h2>Contact :</h2>
 <p>Pour toute question, contactez les organisateurs.</p>

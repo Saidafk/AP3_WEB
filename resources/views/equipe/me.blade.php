@@ -42,9 +42,6 @@
                         Vous ne participez à aucun évènement.
                     </p>
                 @endif
-                
-                
-
 
             </div>
 
@@ -95,7 +92,7 @@
                         <input required type="text" placeholder="Numéro de téléphone" name="telephone" class="form-control"/>
                     </div>
                     <div class="col-12">
-                        <input required type="datetime-local" placeholder="Date de Naissance" name="datenaissance" class="form-control"/>
+                        <input required type="date" placeholder="Date de Naissance" name="datenaissance" class="form-control"/>
                     </div>
                     
                     <div class="col-12">

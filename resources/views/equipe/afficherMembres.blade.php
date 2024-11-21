@@ -14,7 +14,7 @@
 <h1>Voici les membre de l'équipe {{$nomEquipe}} </h1>
     @foreach($equipes as $membre)
         <tr>
-        <td>{{$membre->nom}} {{$membre->prenom}}</td>
+        <td>Nom Prénom : {{$membre->nom}} {{$membre->prenom}}</td>
         </tr>
     @endforeach
 </table>
