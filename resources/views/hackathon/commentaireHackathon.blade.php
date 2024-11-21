@@ -29,6 +29,7 @@
 
         </div>
         <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
+        <a href="{{ route('voirLesHackathons') }}" class="btn btn-primary">Retour aux hackathons</a>
     </form>
 </div>
 @endsection

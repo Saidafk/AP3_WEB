@@ -81,50 +81,81 @@ use Termwind\Components\Hr;
 }
 
 
-    public function voirLesHackathons(Request $request)
-    {
-        
-        $queryFuturs = Hackathon::query();
-        $queryPasses = Hackathon::query();
-    
-        
-        if ($request->filled('ville')) {
-            $queryFuturs->where('ville', $request->input('ville'));
-            $queryPasses->where('ville', $request->input('ville'));
-        }
-    
-        
-        if ($request->filled('date_debut')) {
-            $dateDebut = $request->input('date_debut');
-            
-            
-            $queryFuturs->whereDate('dateheuredebuth', '=', $dateDebut);
-            
-            
-            $queryPasses->whereDate('dateheuredebuth', '=', $dateDebut);
-        }
-          
-        $hackathonsfuturs = $queryFuturs->where('dateButoir', '>', now())->orderBy('dateheuredebuth')->get();
-              
-        $hackathonspasses = $queryPasses->where('dateButoir', '<', now())->orderBy('dateheurefinh')->get();
-    
-        $inscrire = [];
-        $equipe = null;
-    
-        if (SessionHelpers::isConnected()) {
-            $equipe = SessionHelpers::getConnected(); 
-            $inscrire = Inscrire::where('idequipe', $equipe->idequipe)
-                ->with('hackathon') 
-                ->get();
-        }
-    
-        return view('hackathon.afficherHackathon', [
-            'hackathonsfuturs' => $hackathonsfuturs,
-            'hackathonspasses' => $hackathonspasses,
-            'inscrire' => $inscrire,
-            'equipe' => $equipe,
-        ]);
+public function voirLesHackathons(Request $request)
+{
+    // Initialisation des requêtes pour hackathons futurs et passés
+    $queryFuturs = Hackathon::query();
+    $queryPasses = Hackathon::query();
+
+    // Filtrage par ville, si spécifiée
+    if ($request->filled('ville')) {
+        $queryFuturs->where('ville', 'like', '%' . $request->input('ville') . '%');
+        $queryPasses->where('ville', 'like', '%' . $request->input('ville') . '%');
     }
+
+    if ($request->filled('lieu')) {
+        $queryFuturs->where('lieu', 'like', '%' . $request->input('lieu') . '%');
+        $queryPasses->where('lieu', 'like', '%' . $request->input('lieu') . '%');
+    }
+
+    // Filtrage par date de début, si spécifiée
+    if ($request->filled('date_debut')) {
+        $dateDebut = $request->input('date_debut');
+        $queryFuturs->whereDate('dateheuredebuth', '=', $dateDebut);
+        $queryPasses->whereDate('dateheuredebuth', '=', $dateDebut);
+    }
+
+    // Récupération des hackathons futurs et passés
+    $hackathonsfuturs = $queryFuturs->where('dateButoir', '>', now())
+                                     ->orderBy('dateheuredebuth')
+                                     ->get();
+
+    $hackathonspasses = $queryPasses->where('dateButoir', '<', now())
+                                    ->orderBy('dateheurefinh')
+                                    ->get();
+
+    // Récupération des inscriptions de l'équipe connectée
+    $inscrire = [];
+    $equipe = null;
+
+    if (SessionHelpers::isConnected()) {
+        $equipe = SessionHelpers::getConnected();
+
+        // Récupérer les hackathons auxquels l'équipe est inscrite
+        $inscrire = Inscrire::where('idequipe', $equipe->idequipe)
+                            ->with('hackathon')
+                            ->get();
+    
+
+    
+    $hackathonsFutursEquipe = $inscrire->filter(function ($inscription) use ($hackathonsfuturs) {
+        return $hackathonsfuturs->contains('idhackathon', $inscription->idhackathon);
+    });
+
+    $hackathonsPassesEquipe = $inscrire->filter(function ($inscription) use ($hackathonspasses) {
+        return $hackathonspasses->contains('idhackathon', $inscription->idhackathon);
+    });
+
+    return view('hackathon.afficherHackathon', [
+        'hackathonsfuturs' => $hackathonsfuturs,
+        'hackathonspasses' => $hackathonspasses,
+        'inscrire' => $inscrire,
+        'equipe' => $equipe,
+        'hackathonsFutursEquipe' => $hackathonsFutursEquipe,
+        'hackathonsPassesEquipe' => $hackathonsPassesEquipe,
+    ]);
+}
+
+    // Retourner la vue avec toutes les données
+    return view('hackathon.afficherHackathon', [
+        'hackathonsfuturs' => $hackathonsfuturs,
+        'hackathonspasses' => $hackathonspasses,
+        'inscrire' => $inscrire,
+        'equipe' => $equipe,
+    ]);
+
+}
+
 
     public function voirLesInfoHackathon($idhackathon)
 {
@@ -146,18 +177,39 @@ use Termwind\Components\Hr;
 
 public function commentaireHackathon($idhackathon)
 {
+    // Récupération du hackathon
     $hackathon = Hackathon::find($idhackathon);
 
+    // Récupérer l'équipe actuellement connectée
+    $equipe = SessionHelpers::getConnected();
 
+    // Vérifier si l'équipe a participé à ce hackathon (inscrite et non désinscrite)
+    $participation = $equipe->inscrire()->where('idhackathon', $idhackathon)->whereNull('datedesinscription')->first();
+
+    //dd($participation);
+
+    // Vérifier si le hackathon est passé (date de fin est dans le passé)
+    $dateFin = new \DateTime($hackathon->dateheurefinh);
+    $dateActuelle = new \DateTime();
+
+    // Si l'équipe n'a pas participé ou si le hackathon est futur, rediriger
+    if (!$participation || $dateFin > $dateActuelle) {
+        return redirect("/")->withErrors(['errors' => 'Vous ne pouvez pas acceder aux commentaire de ce hackathon.']);
+      
+    }
+
+    // Récupération des commentaires du hackathon avec les équipes associées
     $commentaires = $hackathon->commentaire()->with('equipe')->get();
 
-    
-return view('hackathon.commentaireHackathon', [
-'hackathon' => $hackathon, 
-'commentaires' => $commentaires,
-]);
-
+    // Retourner la vue avec les commentaires
+    return view('hackathon.commentaireHackathon', [
+        'hackathon' => $hackathon, 
+        'commentaires' => $commentaires,
+    ]);
 }
+
+
+
 
 public function ajoutCommentaire(Request $request, $idhackathon)
 {

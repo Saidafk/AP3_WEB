@@ -18,4 +18,13 @@ class EmailHelpers
                 ->html($body);
         });
     }
+
+    public static function sendEmailJson($to, $subject, $view, $data, $attachmentPath)
+{
+    \Mail::send($view, $data, function($message) use ($to, $subject, $attachmentPath) {
+        $message->to($to)
+                ->subject($subject)
+                ->attach($attachmentPath); 
+    });
+}
 }

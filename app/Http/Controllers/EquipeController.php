@@ -507,19 +507,35 @@ public function confirmationDesinscription(Request $request)
 
             $idequipe = $equipe->idequipe;
     
-        $adminEmail = $administrateur->email; 
+            $adminEmail = $administrateur->email; 
      
-        $membres = Membre::where('idequipe', $idequipe)->get();
+            $membres = Membre::where('idequipe', $idequipe)->get();
+
+            $donneesEquipe = [
+                'equipe' => $equipe,
+                         
+            ];
+
+            $jsonData = json_encode($donneesEquipe, JSON_PRETTY_PRINT);
+
+            // Sauvegarder le fichier JSON dans un répertoire temporaire
+            $fileName = "donnees_equipe_{$equipe->nomequipe}.json";
+            $filePath = storage_path("app/public/{$fileName}");
+            file_put_contents($filePath, $jsonData);
 
 
-        EmailHelpers::sendEmail(
+            $subject = "Confirmation de téléchargement des données de l'équipe";
+    $view = "email.confirmationTelechargement";
+
+        EmailHelpers::sendEmailJson(
             $adminEmail,  
-            "Confirmation de téléchargement des données de l'équipe",
-            "email.confirmationTelechargement", 
-            ['equipe' => $equipe, 'membres' => $membres]
+            $subject,
+            $view,
+            ['equipe' => $equipe, 'membres' => $membres],
+            $filePath 
         );
 
-        return redirect("/me")->with(['succes', 'Données télechargées.']);
+        return redirect("/me")->with(['success' => 'Données télechargées.']);
     }
 
     function pagePlanning(){
