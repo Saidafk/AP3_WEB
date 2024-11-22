@@ -459,14 +459,15 @@ public function confirmationDesinscription(Request $request)
 
     // Validation de la requête
     $request->validate([
-        'nomequipe' => 'required|string|max:255|unique:EQUIPE,nomequipe|regex:/^[a-zA-Z0-9\s]*$/',
-        'lienprototype' => 'required|string|max:255|unique:EQUIPE,lienprototype',
-        'login' => 'required|string|max:255|email|unique:EQUIPE,login',
-        'password' => 'nullable|string|min:8|confirmed', // Validation pour le mot de passe
+        'nomequipe' => 'required|string|max:255|regex:/^[a-zA-Z0-9\s]*$/|unique:EQUIPE,nomequipe,' . $equipe->idequipe . ',idequipe',
+        'lienprototype' => 'required|string|max:255|unique:EQUIPE,lienprototype,' . $equipe->idequipe . ',idequipe',
+        'login' => 'required|string|max:255|email|unique:EQUIPE,login,' . $equipe->idequipe . ',idequipe',
+        'password' => 'nullable|string|min:8|confirmed',
     ], [
-        // Personnalisation des messages d'erreur
+        
         'password.min' => 'Le mot de passe doit faire au moins 8 caractères.',
         'nomequipe.unique' => 'Le nom de cette équipe existe déja.',
+        'nomequipe.regex' => 'Le nom de l\'équipe ne doit pas comporter de caractères spéciaux.',
         'lienprototype.unique' => 'Le lien prototype existe déja.',
         'login.unique' => 'Cette email est déja utilisé.',
     ]);
@@ -565,6 +566,7 @@ public function confirmationDesinscription(Request $request)
     if ($hackathon && $hackathon->ateliers()->count() > 0) {
         // Récupérer les ateliers du hackathon actif
         $ateliers = $hackathon->ateliers;
+        //dd($ateliers);
     } else {
         $ateliers = []; // Aucun atelier trouvé
     }
@@ -584,13 +586,12 @@ public function confirmationDesinscription(Request $request)
             'description' => $atelier->description,
             'url' => route('infoAtelier', ['id' => $atelier->id_atelier]), // Lien vers la page de détails de l'atelier
         ];
+        
     }
-
+    
     return view('equipe.planning-hackathon', [
-        'hackathon' => $hackathon,
-        'ateliers' => $ateliers, // Passer les ateliers à la vue
-        'equipe' => $equipe,
-        'events' => json_encode($events)  // Passer les événements au calendrier
+        'events' => $events,
+        'hackathon' => $hackathon
     ]);
 }
 
@@ -599,8 +600,18 @@ public function confirmationDesinscription(Request $request)
 
         $atelier = Atelier::find($id);
 
+        if (!$atelier) {
+            return redirect('/planning-hackathon')->withErrors(['errors' => 'L\'atelier demandé n\'existe pas.']);
+        }
+
+        $hackathon = Hackathon::getActiveHackathon();
+
             $titre = $atelier->titre;
+
             $description = $atelier->description;
+
+            $idatelier = $atelier->id_atelier;
+
             
             $debut = $atelier ->dateheuredebuta;
             $fin = $atelier ->dateheurefina;
@@ -613,23 +624,58 @@ public function confirmationDesinscription(Request $request)
             $duree_minutes_arrondie = round($duree_minutes);
 
             $ATS = AtelierConferencierSalle::where('id_atelier', $id)->get();
-            
-            if(count($ATS) > 0){
-                foreach($ATS as $current){  
-                    $ATS->confName = $current->conferencier->nom;
-                    $ATS->confFirstName = $current->conferencier->prenom;
-                    $ATS->salleName = $current->salle->nom;                   
-                }
-                return view('equipe.detail-atelier',['atelier' => $atelier, 'titre' => $titre, 'description' => $description, 
-                'debuta' => $debuta, 'fina' => $fina, 'duree_minutes_arrondie' => $duree_minutes_arrondie, 'ATS' => $ATS]);
-            }
-            else
-            
-            return redirect("/planning-hackathon")->withErrors(['errors' => "Vide"]);
-            
-        
-    }
 
+
+            
+            if ($ATS->isEmpty()) {
+                $ATS = []; // Cela évite le `count()` sur null
+            }
+
+            $events = [
+                [
+                    'title' => $titre,
+                    'start' => $debuta->format('Y-m-d H:i:s'), // Assurez-vous que le format des dates est valide
+                    'end' => $fina->format('Y-m-d H:i:s'),
+                    'description' => $description,
+                    'url' => route('infoAtelier', ['id' => $idatelier]), // URL vers les détails de l'atelier
+                ]
+            ];
+
+
+            if(count($ATS) > 0){
+                foreach ($ATS as $current) {
+                    $current->confName = $current->conferencier->nom;
+                    $current->confFirstName = $current->conferencier->prenom;
+                    $current->salleName = $current->salle->nom;
+                }
+            
+
+                
+                return view('equipe.detail-atelier', [
+                    'atelier' => $atelier,
+                    'titre' => $titre,
+                    'description' => $description,
+                    'debuta' => $debuta,
+                    'fina' => $fina,
+                    'duree_minutes_arrondie' => $duree_minutes_arrondie,
+                    'ATS' => $ATS,
+                    'events' => $events, // Passer les événements à la vue
+                ]);
+
+            } else if (count($ATS) === 0) {
+                // Aucun conférencier ou salle, on passe un message à la vue
+                return view('equipe.detail-atelier', [
+                    'hackathon' => $hackathon,
+                    'atelier' => $atelier,
+                    'titre' => $titre,
+                    'description' => $description,
+                    'debuta' => $debuta,
+                    'fina' => $fina,
+                    'duree_minutes_arrondie' => $duree_minutes_arrondie,
+                    'ATS' => null, 
+                ])->with('success', "Nous n'avons pas encore toutes les informations concernant l'atelier, veuillez nous excuser.");
+            }
+    }
 }
 
 

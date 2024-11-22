@@ -2,6 +2,10 @@
 
 @section('title', ' - API admin')
 
+@section('custom-css')
+<link href="{{ asset('css/defaut.css') }}" rel="stylesheet"/>
+@endsection
+
 @section('content')
     <div class="d-flex flex-column justify-content-center min-vh-100 align-items-center">
         <div class="card col-xl-7  col-lg-9 col-md-10 col-12">

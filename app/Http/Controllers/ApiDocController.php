@@ -89,7 +89,7 @@ class ApiDocController extends Controller
     }
        
 
-    function gererLesAtelier(){
+    /*function gererLesAtelier(){
 
         $hackathonactif = Hackathon::getActiveHackathon();
 
@@ -118,9 +118,7 @@ class ApiDocController extends Controller
         $conferencier = Conferencier::all();
         $Atelier = Atelier::all();
 
-        //dd($conferencier->id_conferencier);
-        //
-        // Création d'un atelier
+    
         $atelier = new Atelier();
         
         $atelier->titre = $request->input('titre');
@@ -148,7 +146,7 @@ class ApiDocController extends Controller
         return redirect()->route('pageCreation')
             ->with('success', 'Événement créé avec succès!');
     }
-
+    
 
 
     function pageSelectionAtelier(Request $request){
@@ -199,7 +197,7 @@ class ApiDocController extends Controller
 
 
     return redirect()->route('pageSelectionAtelier')->with('success', 'Atelier mis à jour avec succès.');
-}
+}*/
 
 
     
