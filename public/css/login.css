@@ -1,3 +1,21 @@
+
+
+.bannerHome {
+    height: 100vh;
+    background-color: #000000;
+    transition: all 0.1s;
+    background-image: url(/img/home.jpg);
+    background-size: cover;
+    color: white;
+    text-shadow: 3px 3px 10px black;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+}
+
 .wrapper {
     display: flex;
     align-items: center;

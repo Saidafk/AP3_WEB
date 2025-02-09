@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg fullContainer">
+<div v-scope v-cloak class="d-flex flex-column justify-content-center align-items-center bannerHome">  
 
         <div class="wrapper fadeInDown">
             <form action="/login" method="post" id="formContent">
@@ -41,4 +41,14 @@
         </div>
 
     </div>
+
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module';
+
+    createApp({
+        message: "Hello from Petite Vue!"
+    }).mount();
+</script>
 @endsection
+
+

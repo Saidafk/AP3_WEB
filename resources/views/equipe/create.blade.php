@@ -2,8 +2,12 @@
 
 @section("title", " - Créer une équipe")
 
+@section('custom-css')
+    <link href="/css/team.css" rel="stylesheet"/>
+@endsection
+
 @section("content")
-    <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg fullContainer">
+<div v-scope v-cloak class="d-flex flex-column justify-content-center align-items-center bannerHome">
         <div class="card cardRadius">
             <div class="card-body">
                 <h3>Créer une nouvelle équipe</h3>
@@ -45,4 +49,13 @@
             <a href="{{ route("login") }}" class="fadeIn fourth d-block p-2 text-black">J'ai déjà un compte</a>
         </div>
     </div>
+
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module';
+
+    createApp({
+        message: "Hello from Petite Vue!"
+    }).mount();
+</script>
+
 @endsection

@@ -12,19 +12,17 @@
     left: 0;
     bottom: 0;
     overflow: auto;
-    align-items: center;
 }
 
 .main-content {
-    margin-top: 600px; /* Crée un espace sous la bannière */
+    margin-top: 500px; /* Crée un espace sous la bannière */
     color: white;
     width: 100%;
-    align-items: center;
 }
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: auto;
 }
 
 .card {
@@ -35,11 +33,11 @@
 }
 
 h1, h2, h3 {
-    color: white;
+    color: black;
 }
 
 p, ul, li {
-    color: white;
+    color: black;
     line-height: 1.6;
 }
 

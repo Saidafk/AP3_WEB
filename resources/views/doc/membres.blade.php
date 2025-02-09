@@ -2,8 +2,14 @@
 
 @section('title', ' - API Membres')
 
+@section('custom-css')
+<link href="{{ asset('css/adminMembre.css') }}" rel="stylesheet"/>
+@endsection
+
 @section('content')
-    <div class="d-flex flex-column justify-content-center min-vh-100 align-items-center">
+<div v-scope v-cloak class="d-flex flex-column justify-content-center align-items-center bannerHome"> 
+<div class="d-flex flex-column justify-content-center align-items-center main-content">
+
         <div class="card col-xl-7  col-lg-9 col-md-10 col-12">
             <div class="card-body">
                 <h5 class="card-title">
@@ -65,4 +71,14 @@
             </div>
         </div>
     </div>
+    </div>
+
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module';
+
+    createApp({
+        message: "Hello from Petite Vue!"
+    }).mount();
+</script>
+
 @endsection

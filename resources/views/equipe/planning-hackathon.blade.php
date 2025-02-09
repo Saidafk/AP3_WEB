@@ -2,6 +2,8 @@
 
 @section('title', 'Atelier')
 
+
+
 <!-- Assurez-vous que jQuery est chargé avant FullCalendar -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

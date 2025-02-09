@@ -5,8 +5,9 @@
 @section('custom-css')
 <link href="{{ asset('css/defaut.css') }}" rel="stylesheet"/>
 
-
 @section('content')
+
+<div v-scope v-cloak class="d-flex flex-column justify-content-center align-items-center bannerHome">  
 
     <div class="documentation">
 
@@ -42,7 +43,14 @@
             </div>
         </div>
     </div>
+</div>
 
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module';
 
-@endsection
+    createApp({
+        message: "Hello from Petite Vue!"
+    }).mount();
+</script>
+
 @endsection

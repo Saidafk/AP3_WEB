@@ -3,7 +3,7 @@
 @section('title', 'Détails du Hackathon')
 
 @section('custom-css')
-<link href="{{ asset('css/about.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/defaut.css') }}" rel="stylesheet"/>
 @endsection
 
 @section('content')

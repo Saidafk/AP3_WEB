@@ -3,11 +3,11 @@
 @section('title', ' - API admin')
 
 @section('custom-css')
-<link href="{{ asset('css/defaut.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/team.css') }}" rel="stylesheet"/>
 @endsection
 
 @section('content')
-    <div class="d-flex flex-column justify-content-center min-vh-100 align-items-center">
+<div v-scope v-cloak class="d-flex flex-column justify-content-center align-items-center bannerHome">  
         <div class="card col-xl-7  col-lg-9 col-md-10 col-12">
             <div class="card-body">
                 <h5 class="card-title">Bienvenue sur la page administrateur</h5>
@@ -22,4 +22,13 @@
             </div>
         </div>
     </div>
+
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module';
+
+    createApp({
+        message: "Hello from Petite Vue!"
+    }).mount();
+</script>
+
 @endsection

@@ -3,11 +3,12 @@
 @section('title', ' - Mon équipe')
 
 @section('custom-css')
-<link href="{{ asset('css/about.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/profileTeam.css') }}" rel="stylesheet"/>
 @endsection
 
 @section('content')
-    <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg fullContainer">
+<div v-scope v-cloak class="d-flex flex-column justify-content-center align-items-center bannerHome"> 
+<div class="d-flex flex-column justify-content-center align-items-center main-content">
 
 
         <div class="card cardRadius">
@@ -104,6 +105,14 @@
                 </form>
             </div>
         </div>
-
     </div>
+    </div>
+
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/petite-vue?module';
+
+    createApp({
+        message: "Hello from Petite Vue!"
+    }).mount();
+</script>
 @endsection
