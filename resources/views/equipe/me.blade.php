@@ -3,7 +3,7 @@
 @section('title', ' - Mon équipe')
 
 @section('custom-css')
-<link href="{{ asset('css/profileTeam.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/modifierProfile.css') }}" rel="stylesheet"/>
 @endsection
 
 @section('content')

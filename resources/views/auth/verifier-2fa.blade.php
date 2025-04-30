@@ -2,6 +2,10 @@
 
 @section('title', 'Vérification 2FA')
 
+@section('custom-css')
+<link href="{{ asset('css/defaut.css') }}" rel="stylesheet"/>
+@endsection
+
 @section('content')
 <div class="container">
     <h2>Vérification de l'authentification à deux facteurs</h2>
