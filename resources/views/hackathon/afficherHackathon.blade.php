@@ -3,106 +3,208 @@
 @section('title', 'Hackathons')
 
 @section('custom-css')
+
+
+<link href="{{ asset('css/tableau.css') }}" rel="stylesheet"/>
 <link href="{{ asset('css/afficherHackathon.css') }}" rel="stylesheet"/>
 @endsection
 
 @section('content')
-
-    <div class="d-flex flex-column justify-content-center align-items-center bannerHome">
-    <div class="d-flex flex-column justify-content-center align-items-center main-content">
-
-        <form action="{{ route('voirLesHackathons') }}" method="GET" class="mb-4" style="margin-top: 100px; width: 100%; max-width: 400px;">
-            <div class="form-group">
-                <label for="villeSelect">Ville :</label>
-                <input type="text" id="villeSelect" name="ville" class="form-control" placeholder="Ville" value="{{ request('ville') }}">
-            </div>
-
-            <div class="form-group">
-                <label for="lieuSelect">Lieu :</label>
-                <input type="text" id="lieuSelect" name="lieu" class="form-control" placeholder="Lieu" value="{{ request('lieu') }}">
-            </div>
-
-            <div class="form-group">
-                <label for="dateDebut">Date de Début :</label>
-                <input type="date" id="dateDebut" name="date_debut" class="form-control" value="{{ request('date_debut') }}">
-            </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Rechercher</button>
-        </form>
-
-        <h1>Hackathons à venir</h1>
-        <ul>
+<div class="container-fluid py-4 bannerHome">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <!-- Formulaire de recherche -->
+            
+                <h4 class="section-title">Rechercher un hackathon</h4>
+                <form action="{{ route('voirLesHackathons') }}" method="GET" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="villeSelect" class="form-label">Ville</label>
+                        <input type="text" id="villeSelect" name="ville" class="form-control" placeholder="Saisissez une ville" value="{{ request('ville') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="lieuSelect" class="form-label">Lieu</label>
+                        <input type="text" id="lieuSelect" name="lieu" class="form-control" placeholder="Saisissez un lieu" value="{{ request('lieu') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dateDebut" class="form-label">Date de début</label>
+                        <input type="date" id="dateDebut" name="date_debut" class="form-control" value="{{ request('date_debut') }}">
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Rechercher
+                        </button>
+                    </div>
+                </form>
+            
+            <!-- Hackathons à venir -->
+            <h2 class="section-title">Hackathons à venir</h2>
             @if ($hackathonsfuturs->isEmpty())
-                <li>Aucun hackathon à venir ne correspond à vos critères.</li>
+                <div class="no-data">
+                    <i class="fas fa-calendar-times fa-2x mb-3"></i>
+                    <p>Aucun hackathon à venir ne correspond à vos critères.</p>
+                </div>
             @else
-                @foreach ($hackathonsfuturs as $hackathon)
-                    <li>
-                        <strong>{{ $hackathon->thematique }}</strong> 
-                        - du {{ $hackathon->dateheuredebuth }} au {{ $hackathon->dateheurefinh }} 
-                        à {{ $hackathon->ville }} {{ $hackathon->lieu }}
-                        <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $hackathon->idhackathon]) }}" class="btn btn-primary">Info sur le Hackathon</a>
-                    </li>
-                @endforeach
+                <div class="table-responsive hackathon-table">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Thématique</th>
+                                <th>Date de début</th>
+                                <th>Date de fin</th>
+                                <th>Lieu</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($hackathonsfuturs as $hackathon)
+                                <tr class="hackathon-card">
+                                    <td><strong>{{ $hackathon->thematique }}</strong></td>
+                                    <td>{{ $hackathon->dateheuredebuth }}</td>
+                                    <td>{{ $hackathon->dateheurefinh }}</td>
+                                    <td>{{ $hackathon->ville }} ({{ $hackathon->lieu }})</td>
+                                    <td>
+                                        <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $hackathon->idhackathon]) }}" 
+                                           class="btn btn-primary btn-sm">
+                                           <i class="fas fa-info-circle"></i> Détails
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
-        </ul>
 
-        <h1>Hackathons passés</h1>
-        <ul>
+            <!-- Hackathons passés -->
+            <h2 class="section-title">Hackathons passés</h2>
             @if ($hackathonspasses->isEmpty())
-                <li>Aucun hackathon passé ne correspond à vos critères.</li>
+                <div class="no-data">
+                    <i class="fas fa-history fa-2x mb-3"></i>
+                    <p>Aucun hackathon passé ne correspond à vos critères.</p>
+                </div>
             @else
-                @foreach ($hackathonspasses as $hackathon)
-                    <li>
-                        <strong>{{ $hackathon->thematique }}</strong> 
-                        - du {{ $hackathon->dateheuredebuth }} au {{ $hackathon->dateheurefinh }} 
-                        à {{ $hackathon->ville }} {{ $hackathon->lieu }}
-                        <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $hackathon->idhackathon]) }}" class="btn btn-primary">Info sur le Hackathon</a>
-                    </li>
-                @endforeach
+                <div class="table-responsive hackathon-table">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Thématique</th>
+                                <th>Date de début</th>
+                                <th>Date de fin</th>
+                                <th>Lieu</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($hackathonspasses as $hackathon)
+                                <tr class="hackathon-card">
+                                    <td><strong>{{ $hackathon->thematique }}</strong></td>
+                                    <td>{{ $hackathon->dateheuredebuth }}</td>
+                                    <td>{{ $hackathon->dateheurefinh }}</td>
+                                    <td>{{ $hackathon->ville }} ({{ $hackathon->lieu }})</td>
+                                    <td>
+                                        <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $hackathon->idhackathon]) }}" 
+                                           class="btn btn-primary btn-sm">
+                                           <i class="fas fa-info-circle"></i> Détails
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
-        </ul>
 
-        <!-- Vérification si l'équipe est connectée -->
-        @if(!$equipe)
-            <p>Aucune équipe connectée. Veuillez vous connecter pour voir vos participations.</p>
-        @else
-            <!-- Hackathons à venir auxquels l'équipe est inscrite -->
-            <h1>Hackathons à venir auxquels vous êtes inscrit</h1>
-            @if ($hackathonsFutursEquipe->isEmpty())
-                <p>Aucun hackathon futur auquel vous êtes inscrit.</p>
+            <!-- Vérification si l'équipe est connectée -->
+            @if(!$equipe)
+                <div class="alert alert-info mt-4" role="alert">
+                    <i class="fas fa-user-lock mr-2"></i>
+                    Aucune équipe connectée. Veuillez vous connecter pour voir vos participations.
+                </div>
             @else
-                <ul>
-                    @foreach ($hackathonsFutursEquipe as $inscription)
-                        <li>
-                            <strong>{{ $inscription->hackathon->thematique }} </strong>
-                            - du {{ $inscription->hackathon->dateheuredebuth }} 
-                            au {{ $inscription->hackathon->dateheurefinh }} 
-                            à {{ $inscription->hackathon->ville }} {{ $inscription->hackathon->lieu }}
-                            <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" class="btn btn-primary">Info sur le Hackathon</a>
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
+                <!-- Hackathons à venir auxquels l'équipe est inscrite -->
+                <h2 class="section-title">Hackathons à venir auxquels vous êtes inscrit</h2>
+                @if ($hackathonsFutursEquipe->isEmpty())
+                    <div class="no-data">
+                        <i class="fas fa-calendar-check fa-2x mb-3"></i>
+                        <p>Aucun hackathon futur auquel vous êtes inscrit.</p>
+                    </div>
+                @else
+                    <div class="table-responsive hackathon-table">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Thématique</th>
+                                    <th>Date de début</th>
+                                    <th>Date de fin</th>
+                                    <th>Lieu</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($hackathonsFutursEquipe as $inscription)
+                                    <tr class="hackathon-card">
+                                        <td><strong>{{ $inscription->hackathon->thematique }}</strong></td>
+                                        <td>{{ $inscription->hackathon->dateheuredebuth }}</td>
+                                        <td>{{ $inscription->hackathon->dateheurefinh }}</td>
+                                        <td>{{ $inscription->hackathon->ville }} ({{ $inscription->hackathon->lieu }})</td>
+                                        <td>
+                                            <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" 
+                                               class="btn btn-primary btn-sm btn-action">
+                                               <i class="fas fa-info-circle"></i> Détails
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
 
-            <!-- Hackathons passés auxquels l'équipe est inscrite -->
-            <h1>Hackathons passés auxquels vous êtes inscrit</h1>
-            @if ($hackathonsPassesEquipe->isEmpty())
-                <p>Aucun hackathon passé auquel vous êtes inscrit.</p>
-            @else
-                <ul>
-                    @foreach ($hackathonsPassesEquipe as $inscription)
-                        <li>
-                            <strong>{{ $inscription->hackathon->thematique }} </strong>
-                            - du {{ $inscription->hackathon->dateheuredebuth }} 
-                            au {{ $inscription->hackathon->dateheurefinh }} 
-                            à {{ $inscription->hackathon->ville }} {{ $inscription->hackathon->lieu }}
-                            <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" class="btn btn-primary">Info sur le Hackathon</a>
-                            <a href="{{ route('commentaireHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" class="btn btn-primary">Voir les Commentaires</a>
-                        </li>
-                    @endforeach
-                </ul>
+                <!-- Hackathons passés auxquels l'équipe est inscrite -->
+                <h2 class="section-title">Hackathons passés auxquels vous êtes inscrit</h2>
+                @if ($hackathonsPassesEquipe->isEmpty())
+                    <div class="no-data">
+                        <i class="fas fa-trophy fa-2x mb-3"></i>
+                        <p>Aucun hackathon passé auquel vous êtes inscrit.</p>
+                    </div>
+                @else
+                    <div class="table-responsive hackathon-table">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-header">
+                                <tr>
+                                    <th>Thématique</th>
+                                    <th>Date de début</th>
+                                    <th>Date de fin</th>
+                                    <th>Lieu</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($hackathonsPassesEquipe as $inscription)
+                                    <tr class="hackathon-card">
+                                        <td><strong>{{ $inscription->hackathon->thematique }}</strong></td>
+                                        <td>{{ $inscription->hackathon->dateheuredebuth }}</td>
+                                        <td>{{ $inscription->hackathon->dateheurefinh }}</td>
+                                        <td>{{ $inscription->hackathon->ville }} ({{ $inscription->hackathon->lieu }})</td>
+                                        <td>
+                                            <a href="{{ route('voirLesInfoHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" 
+                                               class="btn btn-primary btn-sm btn-action">
+                                               <i class="fas fa-info-circle"></i> Détails
+                                            </a>
+                                            <a href="{{ route('commentaireHackathon', ['idhackathon' => $inscription->hackathon->idhackathon]) }}" 
+                                               class="btn btn-success btn-sm btn-action">
+                                               <i class="fas fa-comments"></i> Commentaires
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
             @endif
-        @endif
+        </div>
     </div>
 </div>
 @endsection

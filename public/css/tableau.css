@@ -1,0 +1,70 @@
+/**
+ * Styles pour l'affichage des tableaux des hackathons
+ */
+
+/* Styles généraux */
+.section-title {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    color: white;
+}
+
+/* Styles pour les tableaux */
+.hackathon-table {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.table-header {
+    background-color: #4e73df;
+    color: white;
+    font-weight: bold;
+}
+
+.hackathon-card {
+    transition: all 0.3s;
+}
+
+.hackathon-card:hover {
+    background-color: #f8f9fc;
+}
+
+/* Styles pour le formulaire de recherche */
+.search-form {
+    background-color: #f8f9fc;
+    border-radius: 8px;
+}
+
+/* Message quand aucune donnée n'est disponible */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fc;
+    border-radius: 8px;
+    color: #6c757d;
+}
+
+/* Styles pour les boutons d'action */
+.btn-action {
+    margin-right: 5px;
+}
+
+/* Adaptation pour les écrans mobiles */
+@media (max-width: 768px) {
+    .hackathon-table {
+        margin-left: -15px;
+        margin-right: -15px;
+        border-radius: 0;
+    }
+    
+    .search-form {
+        padding: 15px;
+    }
+    
+    .btn-action {
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+}

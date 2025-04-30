@@ -1,25 +1,10 @@
 .bannerHome {
-    height: 100vh;
-    background-color: #000000;
-    transition: all 0.1s;
-    background-image: url(/img/home.jpg);
+    background-color: #000; /* noir pur */
+    background-image: url('/img/home.jpg');
     background-size: cover;
+    background-position: center;
     color: white;
-    text-shadow: 3px 3px 10px black;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    overflow: auto;
-    align-items: center;
-}
-
-.main-content {
-    margin-top: 150px; /* Crée un espace sous la bannière */
-    color: white;
-    width: 100%;
-    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
@@ -28,19 +13,8 @@
 }
 
 .card {
-    padding: 20px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h1, h2, h3 {
-    color: white;
-}
-
-p, ul, li {
-    color: white;
-    line-height: 1.6;
 }
 
 a {
