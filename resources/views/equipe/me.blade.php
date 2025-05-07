@@ -30,12 +30,9 @@
                         </ul>
                     </div>
                 @endif
-
                 <h3>Bienvenue "{{ $connected->nomequipe }}"</h3>
-
                 @if ($hackathon->pivot->datedesinscription == null && $hackathon->pivot->dateinscription !== null)
-                    <h5>Votre équipe est inscrite au Hackathon <br><br> « {{ $hackathon->thematique }} »</h5>
-                    
+                    <h5>Votre équipe est inscrite au Hackathon <br><br> « {{ $hackathon->thematique }} »</h5>                   
                     <br/>
                     <img src="{{ $hackathon->affiche }}" alt="Affiche de l'évènement." class="w-50"/>
                 @else
@@ -70,11 +67,7 @@
                         <li class="member">🧑‍💻 {{ "{$m->nom} {$m->prenom}" }}</li>
                         <div class="card-actions">
                         
-                        
-                        
-                                <a href="{{ route('supprimerMembre', ['membre' => $m->idmembre]) }}" class="btn btn-danger btn-small">supprimer le membre</a>
-           
-                            
+                <a href="{{ route('supprimerMembre', ['membre' => $m->idmembre]) }}" class="btn btn-danger btn-small">supprimer le membre</a>                        
             </div>
                     @endforeach
                     

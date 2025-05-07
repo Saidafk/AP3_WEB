@@ -1,28 +1,57 @@
-/* Ajout d'un conteneur spécifique pour diviser la vue */
+.bannerHome {
+    background-color: #000; 
+    background-image: url('/img/home.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-shadow: 3px 3px 10px black;
+    padding-top: 50px;
+}
+
+.fc {
+    color: #fff;
+}
+
+.fc th, .fc td,
+.fc-day-header, .fc-day-number, .fc-toolbar-title,
+.fc-event, .fc-event-dot {
+    color: #fff !important;
+    background-color: transparent;
+}
+
+.fc-event {
+    background-color: #4e73df !important; 
+    border: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+    text-shadow: 2px 2px 8px #000;
+}
+
 .container-agenda {
     display: flex;
     justify-content: space-between;
     width: 80%;
-    max-width: 1200px; /* Ajustez selon la largeur souhaitée */
+    max-width: 1200px; 
     margin: 0 auto;
 }
 
-/* Diviser l'agenda en deux parties égales */
+
 .calendar-left, .calendar-right {
-    width: 48%;  /* Chaque partie occupe 48% de la largeur */
-    background-color: #f7f7f7; /* Optionnel: change la couleur de fond */
+    width: 48%;  
+    background-color: #f7f7f7; 
     padding: 20px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
 
 .calendar-left {
-    margin-right: 4%; /* Ajoute un petit espace entre les deux colonnes */
+    margin-right: 4%; 
 }
 
-/* Style supplémentaire pour l'affichage */
 .fullcalendar {
-    width: 100% !important; /* Assurez-vous que le calendrier occupe toute la largeur disponible */
+    width: 100% !important; 
 }
 
 h1 {

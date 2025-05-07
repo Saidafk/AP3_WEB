@@ -1,11 +1,6 @@
 .bannerHome {
-    height: 100vh;
     background-color: #000000;
-    transition: all 0.1s;
     background-image: url(/img/home.jpg);
-    background-size: cover;
-    color: white;
-
 } 
 
 .button-home {

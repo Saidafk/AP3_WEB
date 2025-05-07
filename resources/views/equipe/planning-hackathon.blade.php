@@ -2,8 +2,6 @@
 
 @section('title', 'Atelier')
 
-
-
 <!-- Assurez-vous que jQuery est chargé avant FullCalendar -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -21,7 +19,7 @@
 @endsection
 
 @section('content')
-<div class="container mt-5">
+<div class="d-flex flex-column justify-content-center align-items-center bannerHome">
     <h2>Planning des Ateliers - Hackathon : {{ $hackathon->thematique }}</h2>
 
     <!-- Calendrier -->

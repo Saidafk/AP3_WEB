@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', ' - Liste des membres')
@@ -7,18 +8,14 @@
 @endsection
 
 @section('content')
-<div class="d-flex flex-column justify-content-center align-items-center min-vh-100 bg fullContainer">
-
-
-<table>
-<h1>Voici les membre de l'équipe {{$nomEquipe}} </h1>
-    @foreach($equipes as $membre)
-        <tr>
-        <td>Nom Prénom : {{$membre->nom}} {{$membre->prenom}}</td>
-        </tr>
-    @endforeach
-</table>
-                        
+<div class="d-flex flex-column justify-content-center align-items-center bannerHome">
+    <h1>Voici les membres de l'équipe {{$nomEquipe}}</h1>
+    <table>
+        @foreach($equipes as $membre)
+            <tr>
+                <td>Nom Prénom : {{$membre->nom}} {{$membre->prenom}}</td>
+            </tr>
+        @endforeach
+    </table>
+</div>
 @endsection
-
-   
