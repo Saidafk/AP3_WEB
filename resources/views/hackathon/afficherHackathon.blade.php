@@ -15,6 +15,8 @@
         <div class="col-lg-10">
             
             <!-- Formulaire de recherche -->
+
+            <a class="btn bg-green m-2 button-home" href="{{ route('Ateliers') }}">Voir les ateliers</a>
             
                 <h4 class="section-title">Rechercher un hackathon</h4>
                 <form action="{{ route('voirLesHackathons') }}" method="GET" class="row g-3">
@@ -36,6 +38,8 @@
                         </button>
                     </div>
                 </form>
+
+
             
             <!-- Hackathons à venir -->
             <h2 class="section-title">Hackathons à venir</h2>

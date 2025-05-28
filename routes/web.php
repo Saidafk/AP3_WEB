@@ -11,6 +11,7 @@ use App\Http\Middleware\IsEquipeConnected;
 use App\Http\Middleware\Check2FA;
 use App\Http\Controllers\HackathonController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AtelierController;
 
 
 include('inc/api.php');
@@ -88,6 +89,7 @@ Route::middleware(isEquipeConnected::class)->group(function () {
 
     Route::get('/planning-hackathon', [EquipeController::class, 'pagePlanning'])->name('pagePlanning');
 
+
     Route::get('/logout', [EquipeController::class, 'logout'])->name('logout');
 
     Route::get('/quitterHackathon', [EquipeController::class, 'quitterHackathon'])->name('quitterHackathon');
@@ -115,11 +117,14 @@ Route::get('/me', [EquipeController::class, 'me'])->name('me');
 
 });
 
-
+Route::get('/hackathons/atelier', [AtelierController::class, 'voirLesAteliers'])->name('voirLesAteliers');
 
 Route::get('/hackathons/{idhackathon}', [HackathonController::class, 'voirLesInfoHackathon'])->name('voirLesInfoHackathon');
 
 Route::get('/hackathons', [HackathonController::class, 'voirLesHackathons'])->name('voirLesHackathons');
+
+
+
 
 
 

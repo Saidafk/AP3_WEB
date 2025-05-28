@@ -88,6 +88,27 @@ class ApiDocController extends Controller
         return view('doc.membres', ['data' => $data, 'lequipe' => $lequipe]);
     }
        
+    function listeAteliers(Request $request)
+    {
+        // Récupération de tous les ateliers
+        $data = Atelier::all();
+
+        // Initialisation de la variable hackathon
+        $hackathon = null;
+
+        /**
+         * Si un hackathon est spécifié, on récupère les ateliers de ce hackathon
+         */
+        if ($request->has('idh')) {
+            // Récupération du hackathon spécifié
+            $hackathon = Hackathon::find($request->input('idh'));
+
+            // Récupération des ateliers du hackathon
+            $data = Atelier::getAteliersInHackhon($hackathon->idhackathon);
+        }
+
+        return view('doc.ateliers', ['data' => $data, 'hackathon' => $hackathon]);
+    }
 
     /*function gererLesAtelier(){
 

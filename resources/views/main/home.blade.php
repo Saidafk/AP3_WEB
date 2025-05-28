@@ -71,6 +71,8 @@
                     <a class="btn bg-green m-2 button-home" href="{{ route('voirLesHackathons') }}">Voir les Hackathons</a>
                     
                     <a class="btn bg-green m-2 button-home" href="{{ route('pagePlanning') }}">Voir le Planning</a>
+
+                    <a class="btn bg-green m-2 button-home" href="{{ route('voirLesAteliers') }}">Voir les ateliers</a>
                     
 
                 </div>

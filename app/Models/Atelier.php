@@ -16,13 +16,22 @@ class Atelier extends Model
     protected $fillable = [
         'titre',
         'description',
-        'duree_minutes'
     ];
     
 
     public function conferenciers()
     {
         return $this->belongsToMany(Conferencier::class, 'atelier_conferencier', 'id_atelier', 'id_conferencier', 'idHackathon');
+    }
+
+    public function hackathon()
+    {
+        return $this->belongsTo(Hackathon::class, 'idHackathon', 'idHackathon');
+    }
+
+    public function niveau()
+    {
+        return $this->belongsTo(Niveau::class, 'NIVEAU', 'id');
     }
 
 }

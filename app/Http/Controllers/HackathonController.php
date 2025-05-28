@@ -83,6 +83,7 @@ use Termwind\Components\Hr;
 
 public function voirLesHackathons(Request $request)
 {
+
     // Initialisation des requêtes pour hackathons futurs et passés
     $queryFuturs = Hackathon::query();
     $queryPasses = Hackathon::query();
